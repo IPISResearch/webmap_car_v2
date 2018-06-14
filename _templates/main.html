@@ -1,0 +1,283 @@
+<!--menu-->
+<button class="mapboxgl-popup-close-button" type="button" aria-label="Close Graph" id="closeMenu">×</button>
+    <div class="inner">
+      <a href="http://ipisresearch.be"><img src="_img/ipislogo.png" alt="IPIS logo" style="float:right;width:44px"></a>
+      <h2 class="section">Central African Republic</h2>
+
+        <h3 class="section">Map Layers</h3>
+
+        <div id="layers"></div>
+        <br>
+        <div id="baselayers">
+            <h3>Base Layer</h3>
+        </div>
+        <br>
+        <a href="javascript:UI.showInfo()" class="button">More info</a>
+        <br>
+    </div>
+
+<!--/menu-->
+
+<!--loading-->
+    <div id="loading">
+        Loading<br>
+        <div class="lds-dual-ring"></div>
+    </div>
+<!--/loading-->
+
+<!--timeout-->
+<div id="timeout">Le chargement de la carte prend plus de temps que prévu. <br>Nous essayons à nouveau.</div>
+<!--/timeout-->
+
+<!--loadererror-->
+<div id="loadererror">Le chargement de la carte a échoué en raison d'un problème de connexion.<br>Réessayez plus tard ou avec une connection plus rappide.<br><br>Si vous voyez se message à plusieurs reprises, controler <a href="https://www.mapbox.com/help/mapbox-browser-support/">ici</a> si votre browser supporte WebGL (ce qui n'est pas le cas pour Internet Explorer), ou contactez <a href="mailto:mapping@ipisresearch.be">mapping@ipisresearch.be</a></div>
+<!--/loadererror-->
+
+
+
+<!--dashboard-->
+<div id="dashboard">
+    <button class="mapboxgl-popup-close-button" type="button" aria-label="Close popup" id="closeDashboard">×</button>
+    <div id="dashboardcontent">
+
+    </div>
+</div>
+<!--/dashboard-->
+
+
+<!--minePopup-->
+    <h2>Mining site</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Substance</th>
+            <td>{{{substance_1}}}</td>
+        </tr>
+        <tr>
+            <th>Source</th>
+            <td>{{{source}}}</td>
+        </tr>
+    </table>
+<!--/minePopup-->
+
+
+
+<!--roadblockPopup-->
+<div class="popup">
+    <h2>Roadblock: {{{location}}}</h2>
+    <div class="popupColLeft">
+        <table class="infotable" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+              <th>Date</th>
+              <td>{{formattedDate}}</td>
+          </tr>
+          <tr>
+                <th>Operator(s)</th>
+                <td>{{operator}}</td>
+            </tr>
+            <tr>
+                <th>Operator(s) Type</th>
+                <td>{{{operatortype}}}</td>
+            </tr>
+            <tr>
+                <th>Roadblock type</th>
+                <td>{{{type}}}</td>
+            </tr>
+            {{#description}}
+            <tr>
+                <th>Description</th>
+                <td>{{{description}}}</td>
+            </tr>
+            {{/description}}
+            {{#source}}
+            <tr>
+                <th>Source</th>
+                <td>{{{source}}}</td>
+            </tr>
+            {{/source}}
+
+        </table>
+    </div>
+</div>
+<!--/roadblockPopup-->
+
+<!--protectedAreaPopup-->
+<div class="popup">
+    <h2>Protected Area</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Name</th>
+            <td>{{{nom_ap}}}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{{type_eng}}}</td>
+        </tr>
+    </table>
+</div>
+<!--/protectedAreaPopup-->
+
+<!--concessionPopup-->
+<div class="popup">
+    <h2>Titre minier</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Type</th>
+            <td>{{{type}}}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{{name}}}</td>
+        </tr>
+        <tr>
+            <th>Parties</th>
+            <td>{{{parties}}}</td>
+        </tr><tr>
+            <th>Statut</th>
+            <td>{{{statut}}}</td>
+        </tr><tr>
+            <th>Date d'expiration</th>
+            <td>{{{date_de1}}}</td>
+        </tr>
+    </table>
+</div>
+<!--/concessionPopup-->
+
+<!--forestryConcessionsPopup-->
+<div class="popup">
+    <h2>Forestry Concession</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Date</th>
+            <td>{{{date_crea}}}</td>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <td>{{{nom_pea}}}</td>
+        </tr>
+        <tr>
+            <th>Operator</th>
+            <td>{{{exploitant}}}</td>
+        </tr>
+    </table>
+</div>
+
+<!--/forestryConcessionsPopup-->
+
+
+<!--huntingZonesPopup-->
+<div class="popup">
+    <h2>Hunting Zone</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        {{#date_crea}}
+        <tr>
+            <th>Date</th>
+            <td>{{{date_crea}}}</td>
+        </tr>
+        {{/date_crea}}
+        {{#nom_zic}}
+        <tr>
+            <th>Name</th>
+            <td>{{{nom_zic}}}</td>
+        </tr>
+        {{/nom_zic}}
+    </table>
+</div>
+
+<!--/huntingZonesPopup-->
+
+<!--oilConcessionsPopup-->
+<div class="popup">
+    <h2>Oil Concession</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        {{#nom_ste}}
+        <tr>
+            <th>Name</th>
+            <td>{{{nom_ste}}}</td>
+        </tr>
+        {{/nom_ste}}
+    </table>
+</div>
+
+<!--/oilConcessionsPopup-->
+
+
+<!--mineralConcessionsPopup-->
+<div class="popup">
+    <h2>Mineral Concession</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Mineral</th>
+            <td>{{{resources}}}</td>
+        </tr>
+        <tr>
+            <th>Concession holder</th>
+            <td>{{{permis_no}}}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{{perm_type}}}</td>
+        </tr>
+    </table>
+</div>
+
+<!--/mineralConcessionsPopup-->
+
+
+<!--troopLocationPopup-->
+<div class="popup">
+    <h2>Troop Location {{{year}}}</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Type</th>
+            <td>{{{type}}}</td>
+        </tr>
+        {{#description}}
+        <tr>
+            <th>Description</th>
+            <td>{{{description}}}</td>
+        </tr>
+        {{/description}}
+        {{#isHeadQuarter}}
+        <tr>
+            <th>HeadQuarter</th>
+            <td>Yes</td>
+        </tr>
+        {{/isHeadQuarter}}
+    </table>
+</div>
+
+<!--/troopLocationPopup-->
+
+
+<!--airstripPopup-->
+<div class="popup">
+    <h2>Airstrip</h2>
+    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        <tr>
+            <th>Name</th>
+            <td>{{{name}}}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{{status}}}</td>
+        </tr>
+    </table>
+</div>
+
+<!--/airstripPopup-->
+
+<!--chart-->
+
+    <div id='chart'></div>
+    <div id='chartclose'>
+        <button class="mapboxgl-popup-close-button" type="button" aria-label="Close Graph" id="closeChart">×</button>
+    </div>
+    <div id="chartselect">
+        <div id="yearaxis"></div>
+        <div id="selectbar"></div>
+        <div class="dot start" id="dotstart">›</div>
+        <div class="dot end" id="dotend">‹</div>
+    </div>
+
+<!--/chart-->
+
