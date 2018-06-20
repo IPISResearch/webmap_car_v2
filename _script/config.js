@@ -433,17 +433,14 @@ var Config = {
             display:{
                 type: 'fill',
                 fillColor: {
-                    property: "resources",
+                    property: "perm_type_long",
                     data: [
-                        {value: "Gold", color: "#eed13d"},
-                        {value: "Diamond", color: "#8addee"},
-                        {value: "Gold and Diamond", color: "#79ee95"},
-                        {value: "Iron", color: "#c9cec7"},
-                        {value: "Limestone", color: "#bf9285"},
-                        {value: "Colombo-Tantalite", color: "#4975bf"},
-                        {value: "Unknown", color: "#AAAAAA"}
+						{value: "Permis de Recherche", color: "#8addee"},
+                        {value: "Permis d'Exploitation", color: "#ee7e6b"},
+						{value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#ee62a8"},
+                        {value: "Autorisation de Reconnaissance Minière", color: "#5794ce"}
                     ]
-                },
+				},
                 fillOpacity: 0.5,
                 hoverOpacity: 0.8,
                 visible: false,
@@ -455,16 +452,13 @@ var Config = {
                     type: "line",
                     paint: {
                         'line-color': {
-                            property: "resources",
+                            property: "perm_type_long",
                             type : "categorical",
                             stops: [
-                                ["Gold", "#eed13d"],
-                                ["Diamond", "#8addee"],
-                                ["Gold and Diamond", "#79ee95"],
-                                ["Iron", "#c9cec7"],
-                                ["Limestone", "#bf9285"],
-                                ["Colombo-Tantalite", "#4975bf"],
-                                ["Unknown", "#bbbbbb"]
+                                ["Permis de Recherche", "#8addee"],
+                                ["Permis d'Exploitation", "#ee7e6b"],
+                                ["Permis d'Exploitation Artisanale Semi-Mecanisee", "#ee62a8"],
+                                ["Autorisation de Reconnaissance Minière", "#5794ce"]
                             ]
                         },
                         'line-opacity':1,
@@ -473,14 +467,22 @@ var Config = {
                 }
             ],
             filters:[
-                {id: "resources", index: 51, label: "Resources", items:
+				{id: "permType", index: 51, label: "Type", items:
+						[
+							{value: "Permis de Recherche", color: "#8addee"},
+							{value: "Permis d'Exploitation", color: "#ee7e6b"},
+							{value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#ee62a8"},
+							{value: "Autorisation de Reconnaissance Minière", color: "#5794ce"}
+						],
+					onFilter: MapService.genericFilter,filterProperty: "perm_type_long"},
+                {id: "resources", index: 52, label: "Resources", items:
                         [
-                            {value: "Gold", color: "#eed13d"},
-                            {value: "Diamond", color: "#8addee"},
-                            {value: "Gold and Diamond", color: "#79ee95"},
-                            {value: "Iron", color: "#c9cec7"},
-                            {value: "Limestone", color: "#bf9285"},
-                            {value: "Colombo-Tantalite", color: "#4975bf"},
+                            {value: "Gold", color: "#aaaaaa"},
+                            {value: "Diamond", color: "#aaaaaa"},
+                            {value: "Gold and Diamond", color: "#aaaaaa"},
+                            {value: "Iron", color: "#aaaaaa"},
+                            {value: "Limestone", color: "#aaaaaa"},
+                            {value: "Colombo-Tantalite", color: "#aaaaaa"},
                             {value: "Unknown", color: "#aaaaaa"}
                         ],
                     onFilter: MapService.genericFilter,filterProperty: "resources"}
