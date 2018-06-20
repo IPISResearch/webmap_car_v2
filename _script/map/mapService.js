@@ -85,13 +85,18 @@ var MapService = (function () {
 						icon.onmouseleave = function(){
 							popupHover.remove();
 						};
-
 					}
 				}
 			},
             onClick: function (e, marker) {
                 var layer = marker.feature.layer;
-                if (layer && layer.id && Config.layers[layer.id] && Config.layers[layer.id].onClick) Config.layers[layer.id].onClick(marker.feature, e.lngLat,true);
+                if (layer && layer.id && Config.layers[layer.id] && Config.layers[layer.id].onClick) {
+                	Config.layers[layer.id].onClick(marker.feature, e.lngLat,true);
+				}else{
+					if (layer && layer.id && Config.subLayers && Config.subLayers[layer.id] && Config.subLayers[layer.id].onClick) {
+						Config.subLayers[layer.id].onClick(marker.feature, e.lngLat,true);
+					}
+				}
             }
         });
 
@@ -518,50 +523,8 @@ var MapService = (function () {
 
         layer.added = true;
 
-        if (layer.onClick) {
-            map.on('mouseenter', layer.id, function (e) {
-                map.getCanvas().style.cursor = 'pointer';
+        if (layer.onClick) me.attachClickEvents(layer);
 
-                if (layer.popupOnhover) {
-
-                    var geo = e.features[0] ? e.features[0].geometry : undefined;
-                    var co = e.lngLat;
-
-                    if (geo) {
-                        if (geo.coordinates) co = geo.coordinates;
-                        if (geo.type === "Polygon") co = MapBoxExtra.polylabel(co);
-                        if (geo.type === "MultiPolygon") co = MapBoxExtra.polylabel(co[0]);
-                    }
-
-
-                    if (typeof layer.popupOnhover === "function"){
-                        var HTML = layer.popupOnhover(e.features[0]);
-                    }else{
-						HTML = e.features[0].properties[layer.popupOnhover];
-                    }
-
-					popupHover.options.offset = undefined;
-                    popupHover.setLngLat(co)
-                        .setHTML(HTML)
-                        .addTo(map);
-                }
-
-            });
-            map.on('mouseleave', layer.id, function (e) {
-                map.getCanvas().style.cursor = '';
-                popupHover.remove();
-            });
-            map.on('click', layer.id, function (e) {
-                popupHover.remove();
-                if (e.features.length > 1) {
-                    // TODO: Spiderify ?
-                    spiderifier.spiderfy(e.features[0].geometry.coordinates, e.features);
-                } else {
-                    layer.onClick(e.features[0], e.lngLat);
-                }
-
-            });
-        }
 
         map.on("render", function () {
             if (map.loaded()) {
@@ -578,6 +541,76 @@ var MapService = (function () {
 
     };
 
+    me.addSubLayer = function(subLayer){
+    	Config.subLayers = Config.subLayers || {};
+    	Config.subLayers[subLayer.id] = subLayer;
+    	if (subLayer.onClick) me.attachClickEvents(subLayer);
+	};
+
+    me.attachClickEvents = function(layer){
+		var onmouseEnter = function (e) {
+			map.getCanvas().style.cursor = 'pointer';
+
+			if (layer.popupOnhover) {
+
+				var geo = e.features[0] ? e.features[0].geometry : undefined;
+				var co = e.lngLat;
+
+				if (geo) {
+					if (geo.coordinates) co = geo.coordinates;
+					if (geo.type === "Polygon") co = MapBoxExtra.polylabel(co);
+					if (geo.type === "MultiPolygon") co = MapBoxExtra.polylabel(co[0]);
+				}
+
+
+				if (typeof layer.popupOnhover === "function"){
+					var HTML = layer.popupOnhover(e.features[0]);
+				}else{
+					HTML = e.features[0].properties[layer.popupOnhover];
+				}
+
+				popupHover.options.offset = undefined;
+				popupHover.setLngLat(co)
+					.setHTML(HTML)
+					.addTo(map);
+			}
+
+		};
+
+		var onmouseLeave = function (e) {
+			map.getCanvas().style.cursor = '';
+			popupHover.remove();
+		};
+
+		var onClick = function (e) {
+			popupHover.remove();
+			if (e.features.length > 1) {
+				// TODO: Spiderify ?
+				spiderifier.spiderfy(e.features[0].geometry.coordinates, e.features);
+			} else {
+				layer.onClick(e.features[0], e.lngLat);
+			}
+
+		};
+
+		map.on('mouseenter', layer.id, onmouseEnter);
+		map.on('mouseleave', layer.id, onmouseLeave);
+		map.on('click', layer.id, onClick);
+
+
+		if (layer.subLayers){
+			layer.subLayers.forEach(function(subLayer,index){
+
+				var id = layer.id + index;
+				map.on('mouseenter', id, onmouseEnter);
+				map.on('mouseleave', id, onmouseLeave);
+				map.on('click', id, onClick);
+
+
+			});
+		}
+
+	}
 
     me.setStyle = function (styleId) {
         map.setStyle('mapbox://styles/' + styleId);

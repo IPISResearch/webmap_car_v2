@@ -291,9 +291,13 @@ var Config = {
                     },
                     layout: {
                         'visibility': 'visible'
-                    }
+                    },
+					onClick: function(item){
+						UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+					}
                 };
                 map.addLayer(subLayerProperties, "ref_miningsites_placeholder");
+				MapService.addSubLayer(subLayerProperties);
 
             },
             onClick: function(item){
@@ -395,9 +399,13 @@ var Config = {
 					},
 					layout: {
 						'visibility': 'visible'
+					},
+					onClick: function(item){
+						UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 					}
 				};
 				map.addLayer(subLayerProperties, "ref_miningsites2014_placeholder");
+				MapService.addSubLayer(subLayerProperties);
 
 			},
 			onClick: function(item){
@@ -617,7 +625,7 @@ var Config = {
             id: "cattletrade",
             placeholder: true,
             filterId: 13,
-            label: "Cattle transhumance and trade",
+            label: "Cattle transhumance and trade routes",
             source: "http://ipis.annexmap.net/api/data/caf_dev/cattletrade",
             sourceId: "cattletrade",
             display:{
