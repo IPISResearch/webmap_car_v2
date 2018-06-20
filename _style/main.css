@@ -413,6 +413,20 @@ body.dashboard #legend.show{
     user-select: none;
 }
 
+#chartmap{
+    position: absolute;
+    width: 58px;
+    height: 49px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(211, 211, 211, 0.7);
+    top: 5px;
+    left: 44px;
+    background-image: url("../_img/caf_zones_inset.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
 #selectbar{
     height: 8px;
     background-color: rgba(22, 173, 109, 0.5);
