@@ -159,6 +159,7 @@ var MapService = (function () {
             for (key in Config.layers) {
                 if (Config.layers.hasOwnProperty(key)) {
                     layer = Config.layers[key];
+					layer.onLoadedTriggered = false;
                     layer.display = layer.display || {visible: true};
                     if (typeof layer.display.visible === "undefined") layer.display.visible = true;
 
@@ -167,13 +168,13 @@ var MapService = (function () {
                     }
 
                     if (layer.display.visible) {
+
                         me.addLayer(Config.layers[key]);
                         if (layer.containerElm) layer.containerElm.classList.remove("inactive");
                         if (layer.labelElm) layer.labelElm.classList.remove("inactive");
 
                         // check initial filter
                         if (Config.initfilterIds.length && layer.filters) {
-                            console.error("initial filter");
                             layer.filters.forEach(function (filter) {
                                 var state = getFilterState(filter.index);
                                 if (state && filter.filterItems && filter.filterItems.length) {
@@ -196,6 +197,13 @@ var MapService = (function () {
                     }
                 }
             }
+
+            if (Config.subLayers){
+				for (key in Config.layers) {
+
+				}
+            }
+
 
             if (!initStyleLoaded) {
                 map.addControl(new mapboxgl.NavigationControl(), 'top-left');

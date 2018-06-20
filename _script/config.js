@@ -983,7 +983,7 @@ var Config = {
 			sourceId: "airstrips",
 			display:{
 				type: 'circle',
-				radius: 12,
+				radius: 6,
 				circleOpacity: 0.5,
 				color: {
 					property: "status",
