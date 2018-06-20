@@ -675,6 +675,45 @@ var Config = {
                 map.addLayer(subLayerProperties, "ref_cattletrade");
             }
         },
+		cattletradepoints:{
+			id: "cattletradepoints",
+			filterId: 23,
+			label: "Cattle transhumance and trade points",
+			source: "http://ipis.annexmap.net/api/data/caf_dev/cattletradepoints",
+			sourceId: "cattletradepoints",
+			display:{
+				type: 'circle',
+				radius: 5,
+				circleOpacity: 0.7,
+				color: {
+					property: "type",
+					data: [
+						{value: "Key Collection Markets", color: "#324d90"},
+						{value: "Collection Markets", color: "#59a6fe"},
+						{value: "Supply Centers", color: "#46e2aa"},
+						{value: "Terminal Market", color: "#d35d2d"}
+					]
+				},
+				visible: false,
+				canToggle: true,
+				zIndex:91
+			},
+			filters: [
+				{id: "cattletradepointtype", index: 231, label: "Type", items:[
+						{label: "Key Collection Markets", value: "Key Collection Markets", color: "#324d90"},
+						{label: "Collection Markets", value: "Collection Markets", color: "#59a6fe"},
+						{label: "Supply Centers", value: "Supply Centers", color: "#46e2aa"},
+						{label: "Terminal Market", value: "Terminal Market", color: "#d35d2d"}
+					], onFilter: MapService.genericFilter,filterProperty: "type"}
+			],
+			popupOnhover: function(feature){
+				return "<b>" + feature.properties.name + "</b><br>" + feature.properties.type
+			},
+			onClick: function(){
+
+			}
+
+		},
         cattleConcentration:{
             id: "cattleconcentration",
             filterId: 12,
