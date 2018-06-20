@@ -107,9 +107,51 @@ var MapService = (function () {
         });
 
         map.on('style.load', function (e) {
-            for (var key in Config.layers) {
+
+            // first build all ref_layers, sorted on z-index
+            var ref_layers =[];
+			for (var key in Config.layers) {
+				if (Config.layers.hasOwnProperty(key)) {
+					var layer = Config.layers[key];
+					if (!layer.referenceLayer){
+						var zIndex = (layer.display && layer.display.zIndex) ? layer.display.zIndex : 1;
+						ref_layers.push({zIndex: zIndex, id: "ref_" + layer.id});
+						layer.refLayer = "ref_" + layer.id;
+                    }else{
+						layer.refLayer = layer.referenceLayer;
+                    }
+				}
+			}
+			ref_layers.sort(function(a,b){
+			    return a.zIndex-b.zIndex;
+            });
+
+
+			ref_layers.forEach(function(ref){
+				map.addLayer({
+					'id': ref.id,
+					"type": "symbol",
+					"source": {
+						"type": "geojson",
+						"data": {
+							"type": "FeatureCollection",
+							"features": [{
+								"type": "Feature",
+								"geometry": {
+									"type": "Point",
+									"coordinates": [0, 0]
+								}
+							}]
+						}
+					},
+					'layout': {}
+				}, Config.defaultRefLayer);
+            });
+
+
+            for (key in Config.layers) {
                 if (Config.layers.hasOwnProperty(key)) {
-                    var layer = Config.layers[key];
+                    layer = Config.layers[key];
                     layer.display = layer.display || {visible: true};
                     if (typeof layer.display.visible === "undefined") layer.display.visible = true;
 
@@ -452,7 +494,7 @@ var MapService = (function () {
 
         if (layer.display && layer.display.filter) layerProperties.filter = layer.display.filter;
 
-        map.addLayer(layerProperties, layer.display.belowLayer);
+        map.addLayer(layerProperties, layer.refLayer);
 
 
 
@@ -468,7 +510,7 @@ var MapService = (function () {
                     }
                 };
                 if (subLayer.filter) subLayerProperties.filter = subLayer.filter;
-                map.addLayer(subLayerProperties, layer.display.belowLayer);
+                map.addLayer(subLayerProperties, layer.refLayer);
             });
         }
 

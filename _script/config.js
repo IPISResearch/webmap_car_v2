@@ -23,6 +23,7 @@ var Config = {
         {index: 2, id: "streets", label: "Rues", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
         {index: 3, id: "empty", label: "Aucune", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
     ],
+	defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
     // layer info
     layers:{
         incidents: {
@@ -90,7 +91,7 @@ var Config = {
                   data: function(){return Data.getIncidentTypes();}
                 },
                 circleOpacity: 0.5, 
-                belowLayer: 'ref_layer_mines'
+                zIndex:100
             }
         },
         influenceZones:{
@@ -140,7 +141,7 @@ var Config = {
                 fillOpacity: 0.4,
                 visible: false,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas',
+				zIndex:99,
                 filter: ["==", "year", "2017"]
             },
             //popupOnhover: "group",
@@ -185,7 +186,7 @@ var Config = {
 				iconOpacity: {
 					stops: [[1, 0.7], [5, 0.8], [7, 1]]
 				},
-				belowLayer: 'ref_layer_roadblocks'
+				zIndex:98
 			},
 			filterId: 2,
 			filters:[
@@ -206,7 +207,7 @@ var Config = {
                 circleStrokeColor: 'rgba(0,0,0,0)',
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_mines'
+				zIndex:98
             },
             onLoaded: function(){
                 var features = map.querySourceFeatures("miningsites_base");
@@ -305,7 +306,7 @@ var Config = {
                 ],
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_concessions'
+				zIndex:97
             }
         },
         mineralConcessions:{
@@ -332,7 +333,7 @@ var Config = {
                 hoverOpacity: 0.8,
                 visible: false,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:96
             },
             subLayers:[
                 {
@@ -389,7 +390,7 @@ var Config = {
                 hoverOpacity: 0.7,
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:95
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"oilConcessionsPopup",lngLat,true);
@@ -417,7 +418,7 @@ var Config = {
                 hoverOpacity: 0.7,
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:94
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"forestryConcessionsPopup",lngLat,true);
@@ -445,7 +446,7 @@ var Config = {
                 hoverOpacity: 0.7,
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:93
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"huntingZonesPopup",lngLat,true);
@@ -481,7 +482,7 @@ var Config = {
                 hoverOpacity: 0.8,
                 visible: false,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:92
             },
             //popupOnhover: "type_ap",
             onClick: function(item,lngLat){
@@ -509,7 +510,7 @@ var Config = {
                 lineOpacity: 0.4,
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas'
+				zIndex:91
             },
             onLoaded: function(){
                 var filterItems = MapService.getFilterItems("cattletrade","transport");
@@ -570,7 +571,7 @@ var Config = {
                 fillOpacity: 1,
                 visible: false,
                 canToggle: true,
-                belowLayer: 'ref_layer_protectedAreas',
+				zIndex:90,
                 filter: ["==", "cattle_den", "low"]
             },
             subLayers : [,
@@ -615,7 +616,7 @@ var Config = {
                 },
                 visible: false,
                 canToggle: true,
-                belowLayer: 'ref_layer_mines',
+				zIndex:89,
                 filter: ["==", "year", "2017"]
             },
             onClick: function(item,lngLat){
@@ -770,7 +771,7 @@ var Config = {
                 lineOpacity: 0.4,
                 visible: true,
                 canToggle: true,
-                belowLayer: 'ref_layer_tradelines'
+				zIndex:88
             },
             onLoaded: function(){
                 var filterItems = MapService.getFilterItems("armstrafficking","type");
@@ -833,7 +834,7 @@ var Config = {
                 iconImage: "airport-11",*/
 				visible: false,
 				canToggle: true,
-				belowLayer: 'ref_layer_mines'
+				zIndex:87
 			},
 			filters: [
 				{id: "status", index: 191, label: "Status", items:[
