@@ -409,6 +409,7 @@ var Data = function () {
 						tp = tp.trim();
 
 						if (tp){
+							if (tp === "Forces Étatiques") tp="State Forces";
 							if (!item.properties.operatorFirst) item.properties.operatorFirst = tp;
 							item.properties.operators.push(tp);
 							if (!roadblocks.operatorLookup[tp]){
@@ -484,7 +485,7 @@ var Data = function () {
 		var mapping = {
 			"Anti-Balaka" : {icon: "roadblock-7-acteurs_etatiques", color: "#D16931"},
 			"FPRC" : {icon: "roadblock-7-elements_independants", color: "#B5938F"},
-			"Forces Étatiquese" : {label: "State forces", icon: "roadblock-7-groupes_armes", color: "#e20500"},
+			"State Forces" : {label: "State forces", icon: "roadblock-7-groupes_armes", color: "#e20500"},
 			"MPC" : {icon: "roadblock-7-groupes_armes", color: "#561410"},
 			"RJ" : {icon: "roadblock-7-groupes_armes", color: "#911d18"},
 			"UPC" : {icon: "roadblock-7-acteurs_civils", color: "#EA6B97"},

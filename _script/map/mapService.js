@@ -144,7 +144,9 @@ var MapService = (function () {
 							}]
 						}
 					},
-					'layout': {}
+					'layout': {
+						'visibility': 'none'
+					}
 				}, Config.defaultRefLayer);
             });
 
