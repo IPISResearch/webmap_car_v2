@@ -114,6 +114,7 @@ var Data = function () {
 						if (d.kt) item.properties.keyIssues.push(4);
 						if (d.ka) item.properties.keyIssues.push(5);
 						if (d.kf) item.properties.keyIssues.push(6);
+						if (d.kh) item.properties.keyIssues.push(7);
 
 						var zone = item.properties.zone.toLowerCase();
 						var fatalitiesZone = incidents.fatalities[zone];
