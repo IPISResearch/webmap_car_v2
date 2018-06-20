@@ -58,7 +58,12 @@ var Data = function () {
 					incidents.types = [];
 					incidents.typeLookup = {};
 
-                    incidents.fatalities = {};
+                    incidents.fatalities = {
+						east: {},
+						centre: {},
+						west: {},
+						bangui: {}
+					};
                     incidents.count = {};
 					incidents.months = [];
 					incidents.monthLookup = [];
@@ -91,6 +96,7 @@ var Data = function () {
                         item.properties.description = d.ds;
                         item.properties.source = d.s;
                         item.properties.location = d.lo;
+						item.properties.zone = d.z || "";
 
                         item.properties.formattedDate = formatDate(item.properties.date);
                         item.properties.month = monthDate(item.properties.date);
@@ -109,9 +115,13 @@ var Data = function () {
 						if (d.ka) item.properties.keyIssues.push(5);
 						if (d.kf) item.properties.keyIssues.push(6);
 
+						var zone = item.properties.zone.toLowerCase();
+						var fatalitiesZone = incidents.fatalities[zone];
+						if (fatalitiesZone){
+							var c = fatalitiesZone[item.properties.month] || 0;
+							fatalitiesZone[item.properties.month] = c + item.properties.fatalities;
+						}
 
-                        var c = incidents.fatalities[item.properties.month] || 0;
-                        incidents.fatalities[item.properties.month] = c + item.properties.fatalities;
                         c = incidents.count[item.properties.month] || 0;
                         incidents.count[item.properties.month] = ++c;
 
@@ -210,8 +220,10 @@ var Data = function () {
     me.getIncidentCount = function(){
         return incidents.count;
     };
-    me.getFatalitiesCount = function(){
-        return incidents.fatalities;
+    me.getFatalitiesCount = function(zone){
+    	console.log("getting " + zone);
+    	console.log(incidents.fatalities[zone.toLowerCase()]);
+        return incidents.fatalities[zone.toLowerCase()];
     };
 
     me.getColorForActor = function(actor){
@@ -231,11 +243,20 @@ var Data = function () {
         incidents.filtered.list = [];
         incidents.filtered.ids = [];
 
-        incidents.fatalities = {};
+        incidents.fatalities = {
+        	east: {},
+        	centre: {},
+        	west: {},
+        	bangui: {}
+
+		};
         incidents.count = {};
 
 		incidents.months.forEach(function(month){
-			incidents.fatalities[month] = 0;
+			incidents.fatalities.east[month] = 0;
+			incidents.fatalities.centre[month] = 0;
+			incidents.fatalities.west[month] = 0;
+			incidents.fatalities.bangui[month] = 0;
 			incidents.count[month] = 0;
 		});
 
@@ -265,8 +286,13 @@ var Data = function () {
                 incidents.filtered.list.push(item);
                 incidents.filtered.ids.push(item.properties.id);
 
-                var c = incidents.fatalities[item.properties.month] || 0;
-                incidents.fatalities[item.properties.month] = c + item.properties.fatalities;
+                var zone = item.properties.zone || "";
+                var fatalitiesZone = incidents.fatalities[zone.toLowerCase()];
+                if (fatalitiesZone){
+					var c = fatalitiesZone[item.properties.month] || 0;
+					fatalitiesZone[item.properties.month] = c + item.properties.fatalities;
+				}
+
                 c = incidents.count[item.properties.month] || 0;
                 incidents.count[item.properties.month] = ++c;
             }

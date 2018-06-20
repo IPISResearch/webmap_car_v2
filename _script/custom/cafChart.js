@@ -21,24 +21,35 @@ var CafChart = function(){
     var isVisible;
 
     var months;
-    var fData = [];
-    var iData = [];
 
-
+    var zones = {
+		east: {zone: "East", label: "Fatalities East", data: []},
+		centre: {zone: "Centre", label: "Fatalities Centre", data: []},
+		west: {zone: "West", label: "Fatalities West", data: []},
+		bangui: {zone: "Bangui", label: "Fatalities Bangui", data: []}
+    };
 
     var getData = function(){
-        var fatalities = Data.getFatalitiesCount();
-        var incidents = Data.getIncidentCount();
+
+        for (var key in zones){
+            if (zones.hasOwnProperty(key)){
+                var zone = zones[key];
+                zone.fatalities = Data.getFatalitiesCount(zone.zone);
+				zone.data = [zone.label];
+            }
+        }
 
         months = [];
-        fData = ['Fatalities'];
-        iData = ['Incidents'];
 
-        for (var key in fatalities){
-            if (fatalities.hasOwnProperty(key)){
-                months.push(key.replace("/","-") + "-01");
-                fData.push(fatalities[key]);
-                iData.push(incidents[key] || 0);
+        for (var fkey in zones.east.fatalities){
+            if (zones.east.fatalities.hasOwnProperty(fkey)){
+                months.push(fkey.replace("/","-") + "-01");
+
+				for (key in zones){
+					if (zones.hasOwnProperty(key)){
+						zones[key].data.push(zones[key].fatalities[fkey] || 0);
+					}
+				}
             }
         }
 
@@ -87,12 +98,16 @@ var CafChart = function(){
                 x: 'x',
                 columns: [
                     months,
-                    fData,
-                    iData
+                    zones.east.data,
+                    zones.centre.data,
+                    zones.west.data,
+                    zones.bangui.data
                 ],
                 types: {
-                    Fatalities: 'area-spline',
-                    Incidents: 'area-spline'
+                    "Fatalities East": 'area-spline',
+                    "Fatalities Centre": 'area-spline',
+                    "Fatalities West": 'area-spline',
+                    "Fatalities Bangui": 'area-spline'
                 }
             },
             axis: {
@@ -188,8 +203,10 @@ var CafChart = function(){
             {
                 columns: [
                     months,
-                    fData,
-                    iData
+                    zones.east.data,
+                    zones.centre.data,
+                    zones.west.data,
+                    zones.bangui.data
                 ]
             }
         );
