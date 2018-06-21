@@ -96,7 +96,7 @@ body.dashboard #menu{
 }
 
 #menu h2{
-    margin: 8px 0px 15px 0px;
+    margin: 0px 0px 20px 0px;;
     font-size: 14px;
 }
 
@@ -1161,5 +1161,3 @@ body.menuHidden #datalist.hidden{
         transform: rotate(360deg);
     }
 }
-
-

@@ -94,7 +94,6 @@ var Data = function () {
                         item.properties.fatalities = parseInt(d.f) || 0;
                         if (isNaN(item.properties.fatalities)) item.properties.fatalities = 0;
                         item.properties.description = d.ds;
-                        item.properties.source = d.s;
                         item.properties.location = d.lo;
 						item.properties.zone = d.z || "";
 
@@ -444,24 +443,22 @@ var Data = function () {
 		var result = [];
 
 
-		/*var mapping = {
-			"acces au marche" : {label: "Access to commercial market", icon: "roadblock-7-other", color: "#7D7E77"},
-			"circulation fluviale" : {label: "River circulation", icon: "roadblock-7-elements_independants", color: "#B5938F"},
-			"circulation routiere" : {label: "Road circulation", icon: "roadblock-7-groupes_armes", color: "#e20500"},
-			"frontiere" : {label: "International border", icon: "roadblock-7-groupes_armes", color: "#561410"},
-			"limite administrative" : {label: "Administrative border", icon: "roadblock-7-groupes_armes", color: "#911d18"},
-			"marche" : {label: "Market-based", icon: "roadblock-7-acteurs_civils", color: "#EA6B97"},
-			"passage fluviale" : {label: "River passage", icon: "roadblock-7-elements_independants", color: "#B4948D"},
-			"ressources naturelles" : {label: "Natural resources", icon: "roadblock-7-forces_de_securite", color: "#6f573a"},
-			"strategique" : {label: "Strategic", icon: "roadblock-7-acteurs_etatiques", color: "#D16931"}
-		};*/
-
-		//var order = ["Seleka", "Anti-balaka", "Civilians", "Pastoralists","LRA"].reverse();
+		var mapping = {
+			"acces au marche" : {label: "Access to commercial market", icon: "roadblock-7-other", color: "silver"},
+			"circulation fluviale" : {label: "River circulation", icon: "roadblock-7-other", color: "silver"},
+			"circulation routiere" : {label: "Road circulation", icon: "roadblock-7-other", color: "silver"},
+			"frontiere" : {label: "International border", icon: "roadblock-7-other", color: "silver"},
+			"limite administrative" : {label: "Administrative border", icon: "roadblock-7-other", color: "silver"},
+			"marche" : {label: "Market-based", icon: "roadblock-7-other", color: "silver"},
+			"passage fluviale" : {label: "River passage", icon: "roadblock-7-other", color: "silver"},
+			"ressources naturelles" : {label: "Natural resources", icon: "roadblock-7-other", color: "silver"},
+			"strategique" : {label: "Strategic", icon: "roadblock-7-other", color: "silver"}
+		};
 
 		roadblocks.types.forEach(function (type,index) {
 
-			//var item = mapping[type] || {label: type, icon: "roadblock-7-other", color: "silver"};
-			var item = {label: type, icon: "roadblock-7-other", color: "silver"};
+			var item = mapping[type] || {label: type, icon: "roadblock-7-other", color: "silver"};
+			//var item = {label: type, icon: "roadblock-7-other", color: "silver"};
 
 			result.push({
 				label: item.label,
@@ -474,10 +471,7 @@ var Data = function () {
 
 		return result;
 
-		//return result.sort(function (a, b) {
-		//	return a.index < b.index ? 1 : -1;
-		//});
-    };
+		};
 
 	me.getRoadblockOperators = function(){
 		var result = [];
@@ -490,8 +484,6 @@ var Data = function () {
 			"RJ" : {icon: "roadblock-7-groupes_armes", color: "#911d18"},
 			"UPC" : {icon: "roadblock-7-acteurs_civils", color: "#EA6B97"},
 			"Autres" : {label: "Others", icon: "roadblock-7-other", color: "#B4948D"}
-			//"ressources naturelles" : {label: "Natural resources", icon: "roadblock-7-forces_de_securite", color: "#6f573a"},
-			//"strategique" : {label: "Strategic", icon: "roadblock-7-acteurs_etatiques", color: "#D16931"}
 		};
 
 		var order = ["Autres"];

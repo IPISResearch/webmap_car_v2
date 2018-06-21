@@ -718,7 +718,7 @@ var UI = function(){
 
         var info = document.createElement("div");
         info.className = "info";
-        info.innerHTML = "<b>Location:</b>" + p.location + "<br><b>Source:</b>" + p.source;
+        info.innerHTML = "<b>Location:</b>" + p.location;
         tr.appendChild(info);
 
         tr.onclick=function(){

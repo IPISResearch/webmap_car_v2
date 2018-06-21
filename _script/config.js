@@ -9,9 +9,9 @@ var Config = {
     infoUrl: "_templates/info.html",
     // starting point for map
     mapCoordinates: {
-      x: 22.4,
-      y: 5.8,
-      zoom: 6,
+      x: 21.1,
+      y: 6,
+      zoom: 5.5,
       bounds: [[14.05,0.20],[30.38,10.26]]
     },
     defaultBaseLayerIndex : 2,
@@ -20,8 +20,8 @@ var Config = {
     // baselayer info
     baselayers:[
         {index: 1, id: "satellite", label: "Satellite", url:"ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
-        {index: 2, id: "streets", label: "Rues", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
-        {index: 3, id: "empty", label: "Aucune", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
+        {index: 2, id: "streets", label: "Streets", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
+        {index: 3, id: "empty", label: "Empty", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
     ],
 	defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
     // layer info
@@ -48,8 +48,9 @@ var Config = {
               //Chart.update();
             },
             onToggle: function(visible){
-              //var legend =  document.getElementById("legend");
-              //visible ? legend.classList.remove("hidden") : legend.classList.add("hidden");
+              var chartbutton =  document.getElementById("chartbutton");
+              var closeChart = document.getElementById("closeChart");
+              visible ? chartbutton.click() : closeChart.click();
             },
             filterId: 1,
             filters:[
@@ -91,7 +92,7 @@ var Config = {
                   property: "type",
                   data: function(){return Data.getIncidentTypes();}
                 },
-                circleOpacity: 0.5, 
+                circleOpacity: 0.5,
                 zIndex:100
             }
         },
@@ -113,7 +114,7 @@ var Config = {
                         {label: "none", value: "none", color: "#c3bebf"}
                     ], onFilter: Data.updateInfluenceZonesFilter,filterProperty: "group"},
                 {id: "year", index: 42, label: "Year", singleValue: true, items:[
-                        {label: "2017", value: "2017" , color: "grey"},
+                        {label: "2017", value: "2017" , color: "silver"},
                 		{label: "2014", value: "2014" , color: "silver"}
                 	], onFilter: Data.updateInfluenceZonesFilter,filterProperty: "year"}
                 //{id: "year", index: 42, label: "Year",items: Data.getInfluenceZonesYears,onFilter: Data.updateInfluenceZonesFilter,filterProperty: "year"}
@@ -159,7 +160,7 @@ var Config = {
         },
 		roadblocks: {
 			id: "roadblocks",
-			label: "RoadBlocks",
+			label: "Roadblocks",
 			source: function(layer,show){return Data.getRoadblocks(layer,show)},
 			sourceId: "roadblocks",
 			popupOnhover: function(feature){
@@ -199,7 +200,7 @@ var Config = {
             placeholder: true,
             id: "miningsites_placeholder",
             filterId: 14,
-            label: "Mining Sites (2018)",
+            label: "Mining Sites <small>(2018)</small>",
             source: "http://ipis.annexmap.net/api/data/caf_dev/miningsites",
             sourceId: "miningsites_base",
             display:{
@@ -308,7 +309,7 @@ var Config = {
 			placeholder: true,
 			id: "miningsites2014_placeholder",
 			filterId: 24,
-			label: "Mining Sites (2014)",
+			label: "Mining Sites <small>(2014)</small>",
 			source: "http://ipis.annexmap.net/api/data/caf_dev/miningsites2014",
 			sourceId: "miningsites2014_base",
 			display:{
@@ -421,11 +422,8 @@ var Config = {
             display:{
                 type: 'heatmap',
                 colors: [
-                    {step: 0, color: "#dbdb22" , opacity: 0},
-                    {step: 0.2, color: "#dbdb22" , opacity: 0.5},
-                    {step: 0.6, color: "#dbdb22" , opacity: 1},
-                    {step: 0.9, color: "#dba636" , opacity: 1},
-                    {step: 1, color: "#cb193a" , opacity: 1}
+                    {step: 0, color: "#dbdbdb" , opacity: 0},
+                    {step: 1, color: "#a1a1a1" , opacity: 1}
                 ],
                 visible: true,
                 canToggle: true,
@@ -443,10 +441,10 @@ var Config = {
                 fillColor: {
                     property: "perm_type_long",
                     data: [
-						{value: "Permis de Recherche", color: "#8addee"},
-                        {value: "Permis d'Exploitation", color: "#ee7e6b"},
-						{value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#ee62a8"},
-                        {value: "Autorisation de Reconnaissance Minière", color: "#5794ce"}
+						                {value: "Permis de Recherche", color: "#43b7ff"},
+                            {value: "Autorisation de Reconnaissance Minière", color: "#2396dd"},
+                            {value: "Permis d'Exploitation", color: "#36ae71"},
+                            {value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#9f2bae"}
                     ]
 				},
                 fillOpacity: 0.5,
@@ -463,24 +461,24 @@ var Config = {
                             property: "perm_type_long",
                             type : "categorical",
                             stops: [
-                                ["Permis de Recherche", "#8addee"],
-                                ["Permis d'Exploitation", "#ee7e6b"],
-                                ["Permis d'Exploitation Artisanale Semi-Mecanisee", "#ee62a8"],
-                                ["Autorisation de Reconnaissance Minière", "#5794ce"]
+                              ["Permis de Recherche", "#43b7ff"],
+                              ["Autorisation de Reconnaissance Minière", "#2396dd"],
+                              ["Permis d'Exploitation", "#36ae71"],
+                              ["Permis d'Exploitation Artisanale Semi-Mecanisee", "#9f2bae"]
                             ]
                         },
                         'line-opacity':1,
-                        'line-width' : 2
+                        'line-width' : 1.5
                     }
                 }
             ],
             filters:[
 				{id: "permType", index: 51, label: "Type", items:
 						[
-							{value: "Permis de Recherche", color: "#8addee"},
-							{value: "Permis d'Exploitation", color: "#ee7e6b"},
-							{value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#ee62a8"},
-							{value: "Autorisation de Reconnaissance Minière", color: "#5794ce"}
+              {value: "Permis de Recherche", color: "#43b7ff"},
+              {value: "Autorisation de Reconnaissance Minière", color: "#2396dd"},
+              {value: "Permis d'Exploitation", color: "#36ae71"},
+              {value: "Permis d'Exploitation Artisanale Semi-Mecanisee", color: "#9f2bae"}
 						],
 					onFilter: MapService.genericFilter,filterProperty: "perm_type_long"},
                 {id: "resources", index: 52, label: "Resources", items:
@@ -519,16 +517,7 @@ var Config = {
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"oilConcessionsPopup",lngLat,true);
-            },
-            subLayers:[
-                {
-                    type: "line",
-                    paint: {
-                        "line-color": "#333",
-                        "line-width": 1
-                    }
-                }
-            ]
+            }
         },
         forestryConcessions:{
             id: "forestryconcessions",
@@ -538,7 +527,7 @@ var Config = {
             sourceId: "forestryconcession",
             display:{
                 type: 'fill',
-                fillColor: "#77c370",
+                fillColor: "#32552f",
                 fillOpacity: 0.3,
                 hoverOpacity: 0.7,
                 visible: true,
@@ -547,16 +536,7 @@ var Config = {
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"forestryConcessionsPopup",lngLat,true);
-            },
-            subLayers:[
-                {
-                    type: "line",
-                    paint: {
-                        "line-color": "#77c370",
-                        "line-width": 1
-                    }
-                }
-            ]
+            }
         },
         huntingZones:{
             id: "huntingzones",
@@ -566,7 +546,7 @@ var Config = {
             sourceId: "huntingzones",
             display:{
                 type: 'fill',
-                fillColor: "#58adb0",
+                fillColor: "#a67650",
                 fillOpacity: 0.4,
                 hoverOpacity: 0.7,
                 visible: true,
@@ -575,16 +555,7 @@ var Config = {
             },
             onClick: function(item,lngLat){
                 UI.popup(item.properties,"huntingZonesPopup",lngLat,true);
-            },
-            subLayers:[
-                {
-                    type: "line",
-                    paint: {
-                        "line-color": "#58adb0",
-                        "line-width": 1
-                    }
-                }
-            ]
+            }
         },
         protectedareas:{
             id: "protectedareas",
@@ -595,12 +566,13 @@ var Config = {
             display:{
                 type: 'fill',
                 fillColor: {
-                    property: "type_ap",
+                    property: "type_eng",
                     data: [
-                        {value: "0", color: "#4a7f57"},
-                        {value: "1", color: "#8cd89d"},
-                        {value: "4", color: "#87c380"},
-                        {value: "5", color: "#a4d577"}
+                        {value: "National Park", color: "#3ba151"},
+                        {value: "Wildlife Reserve", color: "#6cc680"},
+                        {value: "Biosphere Reserve", color: "#9bcd95"},
+                        {value: "Integral Natural Reserve", color: "#72af7f"},
+                        {value: "Nature Reserve", color: "#5a8764"}
                     ]
                 },
                 fillOpacity: 0.5,
@@ -621,6 +593,51 @@ var Config = {
 
             }
         },
+        cattletradepoints:{
+    			id: "cattletradepoints",
+    			filterId: 23,
+    			label: "Cattle transhumance and trade points",
+    			source: "http://ipis.annexmap.net/api/data/caf_dev/cattletradepoints",
+    			sourceId: "cattletradepoints",
+    			display:{
+    				type: 'circle',
+    				radius: 7,
+    				circleOpacity: 1,
+    				color: {
+    					property: "type",
+    					data: [
+    						{value: "Supply Centers", color: "#ffb86e"},
+                {value: "Key Collection Markets", color: "#6e370a"},
+    						{value: "Collection Markets", color: "#967559"},
+    						{value: "Terminal Market", color: "#000000"}
+    					]
+              // data: [
+              // 	{value: "Supply Centers", color: "#46e2aa"},
+    					// 	{value: "Key Collection Markets", color: "#324d90"},
+    					// 	{value: "Collection Markets", color: "#59a6fe"},
+    					// 	{value: "Terminal Market", color: "#d35d2d"}
+    					// ]
+    				},
+    				visible: false,
+    				canToggle: true,
+    				zIndex:91
+    			},
+    			filters: [
+    				{id: "cattletradepointtype", index: 231, label: "Type", items:[
+              {label: "Supply Centers", value: "Supply Centers", color: "#ffb86e"},
+              {label: "Key Collection Markets", value: "Key Collection Markets", color: "#6e370a"},
+    						{label: "Collection Markets", value: "Collection Markets", color: "#967559"},
+    						{label: "Terminal Market", value: "Terminal Market", color: "#000000"}
+    					], onFilter: MapService.genericFilter,filterProperty: "type"}
+    			],
+    			popupOnhover: function(feature){
+    				return "<b>" + feature.properties.name + "</b><br>" + feature.properties.type
+    			},
+    			onClick: function(){
+
+    			}
+
+    		},
         cattletrade_placeholder:{
             id: "cattletrade",
             placeholder: true,
@@ -638,7 +655,8 @@ var Config = {
 				zIndex:91
             },
             onLoaded: function(){
-                var filterItems = MapService.getFilterItems("cattletrade","transport");
+                var mapping = {"Cattle trade (by boat)": {color: "#c92103"}, "Cattle trade (by vehicle)": {color: "#d4650a"}, "Cattle transhumance": {color: "#6a380c"}, "Local transhumance": {color: "#dba87f"}}
+                var filterItems = MapService.getFilterItems("cattletrade","transport", mapping);
                 var parent = this.labelElm.parentElement;
 
                 this.filters = [
@@ -675,45 +693,6 @@ var Config = {
                 map.addLayer(subLayerProperties, "ref_cattletrade");
             }
         },
-		cattletradepoints:{
-			id: "cattletradepoints",
-			filterId: 23,
-			label: "Cattle transhumance and trade points",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/cattletradepoints",
-			sourceId: "cattletradepoints",
-			display:{
-				type: 'circle',
-				radius: 5,
-				circleOpacity: 0.7,
-				color: {
-					property: "type",
-					data: [
-						{value: "Key Collection Markets", color: "#324d90"},
-						{value: "Collection Markets", color: "#59a6fe"},
-						{value: "Supply Centers", color: "#46e2aa"},
-						{value: "Terminal Market", color: "#d35d2d"}
-					]
-				},
-				visible: false,
-				canToggle: true,
-				zIndex:91
-			},
-			filters: [
-				{id: "cattletradepointtype", index: 231, label: "Type", items:[
-						{label: "Key Collection Markets", value: "Key Collection Markets", color: "#324d90"},
-						{label: "Collection Markets", value: "Collection Markets", color: "#59a6fe"},
-						{label: "Supply Centers", value: "Supply Centers", color: "#46e2aa"},
-						{label: "Terminal Market", value: "Terminal Market", color: "#d35d2d"}
-					], onFilter: MapService.genericFilter,filterProperty: "type"}
-			],
-			popupOnhover: function(feature){
-				return "<b>" + feature.properties.name + "</b><br>" + feature.properties.type
-			},
-			onClick: function(){
-
-			}
-
-		},
         cattleConcentration:{
             id: "cattleconcentration",
             filterId: 12,
