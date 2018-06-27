@@ -207,6 +207,10 @@ var MapService = (function () {
 
       if (!initStyleLoaded) {
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        if(Config.apiScope == "caf_dev") {
+          map.addControl(new MapboxInspect(), 'top-left');
+          map.addControl(new MapboxInspect(), 'top-left'); // Must be loaded twice for some reason
+        }
         map.addControl(new mapboxgl.ScaleControl({}));
         document.getElementsByClassName("mapboxgl-ctrl-scale")[0].style.cssText = "margin: 0px 0px -22px 105px;border-color: rgba(0,0,0,0.15); border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;"
         initStyleLoaded = true;
@@ -236,15 +240,22 @@ var MapService = (function () {
 
     var source = mapSources[sourceId];
     if (!source) {
-      map.addSource(sourceId, {
-        type: 'geojson',
-        data: sourceOrigin,
-        buffer: 0,
-        maxzoom: 14,
-        cluster: false,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-      });
+      if((typeof sourceOrigin === "string") ? sourceOrigin.indexOf("mapbox://") == 0 : 0) {
+        map.addSource(sourceId, {
+          type: 'vector',
+          url: sourceOrigin
+        });
+      } else {
+        map.addSource(sourceId, {
+          type: 'geojson',
+          data: sourceOrigin,
+          buffer: 0,
+          maxzoom: 14,
+          cluster: false,
+          clusterMaxZoom: 14, // Max zoom to cluster points on
+          clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+        });
+      }
     }
 
     var circleColor = "blue";
@@ -506,6 +517,8 @@ var MapService = (function () {
       paint: paint,
       layout: layout
     };
+
+    if(layer.sourceLayer) {layerProperties['source-layer'] = layer.sourceLayer}
 
     if (layer.display && layer.display.filter) layerProperties.filter = layer.display.filter;
 

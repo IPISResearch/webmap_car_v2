@@ -477,13 +477,13 @@ var Data = function () {
     var result = [];
 
     var mapping = {
-      "Anti-Balaka" : {icon: "roadblock-7-acteurs_etatiques", color: "#D16931"},
+      "Anti-Balaka" : {icon: "roadblock-7-groupes_armes", color: "#F40020"},
       "FPRC" : {icon: "roadblock-7-elements_independants", color: "#B5938F"},
-      "State Forces" : {label: "State forces", icon: "roadblock-7-groupes_armes", color: "#e20500"},
-      "MPC" : {icon: "roadblock-7-groupes_armes", color: "#561410"},
+      "State Forces" : {label: "State forces", icon: "roadblock-7-acteurs_etatiques", color: "#D16931"},
+      "MPC" : {icon: "roadblock-7-forces_de_securite", color: "#561410"},
       "RJ" : {icon: "roadblock-7-groupes_armes", color: "#911d18"},
       "UPC" : {icon: "roadblock-7-acteurs_civils", color: "#EA6B97"},
-      "Autres" : {label: "Others", icon: "roadblock-7-other", color: "#B4948D"}
+      "Autres" : {label: "Others", icon: "roadblock-7-other", color: "silver"}
     };
 
     var order = ["Autres"];

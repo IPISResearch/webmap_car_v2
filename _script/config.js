@@ -9,8 +9,8 @@ var Config = {
   infoUrl: "_templates/info.html",
   // starting point for map
   mapCoordinates: {
-    x: 21.1,
-    y: 6,
+    x: 22,
+    y: 5.5,
     zoom: 5.5,
     bounds: [[14.05,0.20],[30.38,10.26]]
   },
@@ -182,9 +182,7 @@ var Config = {
           property: "operatorFirst",
           data: Data.getRoadblockOperators
         },
-        iconSize: {
-          stops: [[1, 0.7], [7, 1], [9, 2]]
-        },
+        iconSize: 1,
         iconOpacity: {
           stops: [[1, 0.7], [5, 0.8], [7, 1]]
         },
@@ -292,18 +290,18 @@ var Config = {
           },
           layout: {
             'visibility': 'visible'
-          },
-          onClick: function(item){
-            UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
           }
+          //onClick: function(item){
+          //  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+          //}
         };
         map.addLayer(subLayerProperties, "ref_miningsites_placeholder");
         MapService.addSubLayer(subLayerProperties);
 
-      },
-      onClick: function(item){
-        UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
       }
+      //onClick: function(item){
+      //  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+      //}
     },
     miningsites2014_placeholder:{
       placeholder: true,
@@ -400,18 +398,18 @@ var Config = {
           },
           layout: {
             'visibility': 'visible'
-          },
-          onClick: function(item){
-            UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
           }
+          //onClick: function(item){
+          //  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+          //}
         };
         map.addLayer(subLayerProperties, "ref_miningsites2014_placeholder");
         MapService.addSubLayer(subLayerProperties);
 
-      },
-      onClick: function(item){
-        UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
       }
+      //onClick: function(item){
+      //  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+      //}
     },
     miningActivities:{
       id: "miningactivities",
@@ -527,7 +525,7 @@ var Config = {
       sourceId: "forestryconcession",
       display:{
         type: 'fill',
-        fillColor: "#32552f",
+        fillColor: "#1d321b",
         fillOpacity: 0.3,
         hoverOpacity: 0.7,
         visible: true,
@@ -546,7 +544,7 @@ var Config = {
       sourceId: "huntingzones",
       display:{
         type: 'fill',
-        fillColor: "#a67650",
+        fillColor: "#80736a",
         fillOpacity: 0.4,
         hoverOpacity: 0.7,
         visible: true,
@@ -572,7 +570,7 @@ var Config = {
             {value: "Wildlife Reserve", color: "#6cc680"},
             {value: "Biosphere Reserve", color: "#9bcd95"},
             {value: "Integral Natural Reserve", color: "#72af7f"},
-            {value: "Nature Reserve", color: "#5a8764"}
+            {value: "Nature Reserve", color: "#649f72"}
           ]
         },
         fillOpacity: 0.5,
@@ -581,6 +579,16 @@ var Config = {
         canToggle: true,
         zIndex:92
       },
+      //filters:[
+      //  {id: "type_eng", index: 55, label: "Type", items:
+      //  [
+      //    {value: "National Park", color: "#3ba151"},
+      //    {value: "Wildlife Reserve", color: "#6cc680"},
+      //    {value: "Biosphere Reserve", color: "#9bcd95"},
+      //    {value: "Integral Natural Reserve", color: "#72af7f"},
+      //    {value: "Nature Reserve", color: "#649f72"}
+      //  ],
+      //  onFilter: MapService.genericFilter,filterProperty: "type_eng"}],
       //popupOnhover: "type_ap",
       onClick: function(item,lngLat){
         function format(item){
@@ -588,9 +596,25 @@ var Config = {
         }
         UI.hideDashboard();
         UI.popup(format(item).properties,"protectedAreaPopup",lngLat,true);
-      },
-      onLoaded: function(){
-
+      }
+    },
+    rivers:{
+      id: "rivers",
+      filterId: 24,
+      label: "Rivers",
+      source: "mapbox://ipisresearch.87b9ryrr",
+      sourceLayer: "caf_rivers_2018_l_ipis-08yal4", // You cand find what this is after uploading a tileset and inserting it in a mapbox studio style. See also https://www.mapbox.com/mapbox-gl-js/style-spec/#layer-source-layer
+      sourceId: "rivers",
+      display:{
+        type: 'line',
+        lineColor: "#69cae8",
+        lineWidth: {
+          stops: [[4, 0.2], [6, 0.6], [8, 1]]
+        },
+        lineOpacity: 1,
+        visible: true,
+        canToggle: true,
+        zIndex:91
       }
     },
     cattletradepoints:{
@@ -710,29 +734,29 @@ var Config = {
         //    {value: "hight", pattern: "dot_green_small2"}
         //]
         //},
-        fillPattern: "dot_green_tiny2",
-        fillOpacity: 1,
-        visible: false,
+        fillColor: "#834521",
+        fillOpacity: [
+          "case",
+          ["==", ["get", "cattle_den"], "low"],
+          0.1,
+          ["==", ["get", "cattle_den"], "medium"],
+          0.2,
+          ["==", ["get", "cattle_den"], "high"],
+          0.3,
+          0.2
+        ],
+        visible: true,
         canToggle: true,
-        zIndex:90,
-        filter: ["==", "cattle_den", "low"]
+        zIndex:90
       },
-      subLayers : [,
-        {
-          paint:{
-            "fill-opacity": 1,
-            "fill-pattern" : "dot_green_tiny"
-          },
-          filter: ["==", "cattle_den", "medium"]
-        },
-        {
-          paint:{
-            "fill-opacity": 1,
-            "fill-pattern" : "dot_green_medium"
-          },
-          filter: ["==", "cattle_den", "high"]
-        }
-      ]
+      filters:[
+        {id: "cattle_den", index: 54, label: "Concentration level", items:
+        [
+          {value: "low", color: "#e3c8b8"},
+          {value: "medium", color: "#dbb39b"},
+          {value: "high", color: "#c99a7e"}
+        ],
+        onFilter: MapService.genericFilter,filterProperty: "cattle_den"}]
     },
     troopLocation:{
       id: "trooplocation",
@@ -961,29 +985,39 @@ airstrips:{
   source: "http://ipis.annexmap.net/api/data/caf_dev/airstrips",
   sourceId: "airstrips",
   display:{
-    type: 'circle',
-    radius: 6,
-    circleOpacity: 0.5,
-    color: {
-      property: "status",
-      data: [
-        {value: "open", color: "#53af3e"},
-        {value: "closed", color: "#c7431b"},
-        {value: "unknown", color: "#477da6"}
-      ]
-    },
+    //type: 'circle',
+    //radius: 6,
+    //circleOpacity: 0.5,
+    //color: {
+    //  property: "status",
+    //  data: [
+    //    {value: "open", color: "#53af3e"},
+    //    {value: "closed", color: "#c7431b"},
+    //    {value: "unknown", color: "#477da6"}
+    //  ]
+    //},
 
-    /*type: "symbol",
-    iconImage: "airport-11",*/
+    type: "symbol",
+    iconImage: [
+      "case",
+      ["==", ["get", "status"], "open"],
+      "airfield-11-green",
+      ["==", ["get", "status"], "closed"],
+      "airfield-11-red",
+      ["==", ["get", "status"], "unknown"],
+      "airfield-11-grey",
+      "airfield-11-grey"
+    ],
+
     visible: false,
     canToggle: true,
     zIndex:87
   },
   filters: [
     {id: "status", index: 191, label: "Status", items:[
-      {label: "Open", value: "open", color: "#53af3e"},
-      {label: "Closed", value: "closed", color: "#c7431b"},
-      {label: "Unknown", value: "unknown", color: "#477da6"}
+      {label: "Open", value: "open", color: "#3b8129"},
+      {label: "Closed", value: "closed", color: "#ad3331"},
+      {label: "Unknown", value: "unknown", color: "#6b6b6b"}
     ], onFilter: MapService.genericFilter,filterProperty: "status"}
   ],
   onClick: function(item){
