@@ -253,15 +253,17 @@ var UI = function(){
     };
 
     me.appendLayerFilters = function(layer,layerContainer){
+
+
+		if (layerContainer.querySelector(".appended")){
+			// filters aleady present - this happens on base layer switch
+			return;
+		}
+
         if (layer.filters) layer.filters.forEach(function(filter){
 
-            if (layerContainer.querySelector(".filterlabel")){
-                // filters aleady present - this happens on base layer switch
-                return;
-            }
-
             var filterContainer = div("filter");
-            var filterLabel  = div("filterlabel",filter.label);
+            var filterLabel  = div("filterlabel appended",filter.label);
 
             filterContainer.appendChild(filterLabel);
             var itemContainer = div("items");
