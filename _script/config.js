@@ -13,7 +13,9 @@ var Config = {
     x: 22,
     y: 5.5,
     zoom: 5.5,
-    bounds: [[14.05,0.20],[30.38,10.26]]
+    bounds: [[14.05,0.20],[30.38,10.26]],
+    maxZoom: 18,
+    minZoom: 5
   },
   defaultBaseLayerIndex : 2,
   // if preLoad is defined, this occurs before the map is shown - used to pre-generate datasets etc.
@@ -467,7 +469,7 @@ var Config = {
               ]
             },
             'line-opacity':1,
-            'line-width' : 1.5
+            'line-width' : 1
           }
         }
       ],

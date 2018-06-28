@@ -387,13 +387,14 @@ body.dashboard #legend.show{
 
 
 #chartcontainer{
-    background-color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.9);
     position: absolute;
     bottom: 40px;
     left: 10px;
     right: 280px;
     height: 140px;
     border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1)
 }
 
 #chartContainer.hidden{
@@ -404,6 +405,8 @@ body.dashboard #legend.show{
     position: absolute;
     left: 50px;
     top: 12px;
+    text-shadow: 0 0 0.2em #ffffff, 0 0 0.2em #ffffff;
+    font-weight: bold;
 }
 
 #chartselect{
@@ -435,9 +438,14 @@ body.dashboard #legend.show{
 
 #selectbar{
     height: 8px;
-    background-color: rgba(22, 173, 109, 0.5);
+    background-color: rgba(72, 126, 30, 0.7);
     position: absolute;
     left: 0;
+}
+
+#selectbar:hover{
+    background-color: rgba(54, 96, 22, 0.9);
+    cursor: ew-resize;
 }
 
 #chartselect .dot{
@@ -445,7 +453,7 @@ body.dashboard #legend.show{
     width: 20px;
     height: 20px;
     border-radius: 10px;
-    background-color: rgba(22, 173, 109, 0.74);
+    background-color: rgba(72, 126, 30, 1);
     margin: -6px 0 0 -10px;
     text-align: center;
     color: white;
@@ -453,12 +461,7 @@ body.dashboard #legend.show{
 }
 
 #chartselect .dot:hover{
-    background-color: rgb(21, 138, 86,);
-    cursor: ew-resize;
-}
-
-#selectbar:hover{
-    background-color: rgba(21, 138, 86, 0.7);
+    background-color: rgba(54, 96, 22, 1);
     cursor: ew-resize;
 }
 
@@ -1134,7 +1137,7 @@ body.menuHidden #datalist.hidden{
 
 #datalist #dataListContainer.focused .entry.focused{
     color: #111;
-    background-color: #ddf4c0;
+    background-color: #bdceaa;
 }
 
 

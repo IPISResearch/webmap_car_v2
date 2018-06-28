@@ -20,7 +20,9 @@ var MapService = (function () {
       container: 'map',
       style: 'mapbox://styles/' + Config.initStyle || 'ipisresearch/ciw6jpn5s002r2jtb615o6shz',
       center: [Config.mapCoordinates.x, Config.mapCoordinates.y],
-      zoom: Config.mapCoordinates.zoom
+      zoom: Config.mapCoordinates.zoom,
+      maxZoom: Config.mapCoordinates.maxZoom,
+      minZoom: Config.mapCoordinates.minZoom
     });
 
     map.on("zoomend", function () {
