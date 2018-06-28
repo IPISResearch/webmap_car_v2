@@ -207,7 +207,7 @@ var MapService = (function () {
 
       if (!initStyleLoaded) {
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-        if(Config.apiScope == "caf_dev") {
+        if(Config.useMapBoxInspector && Config.apiScope.indexOf("_dev")>0 && MapboxInspect) {
           map.addControl(new MapboxInspect(), 'top-left');
           map.addControl(new MapboxInspect(), 'top-left'); // Must be loaded twice for some reason
         }

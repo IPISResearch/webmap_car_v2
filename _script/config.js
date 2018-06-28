@@ -3,6 +3,7 @@ var version = "0.0.1";
 var Config = {
   mapId: "CAFV2",
   apiScope: "caf",
+  useMapBoxInspector: false,
   templateURL: "_templates/main.html",
   showDisclaimerOnFirstUse: false,
   disclaimerUrl: "_templates/disclaimer.html",
@@ -600,7 +601,7 @@ var Config = {
     },
     rivers:{
       id: "rivers",
-      filterId: 24,
+      filterId: 25,
       label: "Rivers",
       source: "mapbox://ipisresearch.87b9ryrr",
       sourceLayer: "caf_rivers_2018_l_ipis-08yal4", // You cand find what this is after uploading a tileset and inserting it in a mapbox studio style. See also https://www.mapbox.com/mapbox-gl-js/style-spec/#layer-source-layer
