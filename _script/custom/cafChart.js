@@ -23,10 +23,10 @@ var CafChart = function(){
     var months;
 
     var zones = {
-		east: {zone: "East", label: "Fatalities East", data: []},
-		centre: {zone: "Centre", label: "Fatalities Centre", data: []},
-		west: {zone: "West", label: "Fatalities West", data: []},
-		bangui: {zone: "Bangui", label: "Fatalities Bangui", data: []}
+		west: {zone: "West", label: "West", data: []},
+		centre: {zone: "Centre", label: "Centre", data: []},
+		east: {zone: "East", label: "East", data: []},
+		bangui: {zone: "Bangui", label: "Bangui", data: []}
     };
 
     var getData = function(){
@@ -57,6 +57,9 @@ var CafChart = function(){
     };
 
     me.render = function(){
+
+    	if (document.getElementById("chartContainer")) return;
+
         getData();
 
         var container = document.createElement("div");
@@ -95,22 +98,22 @@ var CafChart = function(){
                 width: w
             },
 			color: {
-				pattern: ['#85A308', '#D97713', '#0074A7', '#DA0E00']
+				pattern: ['#0074A7', '#D97713', '#85A308', '#DA0E00']
 			},
             data: {
                 x: 'x',
                 columns: [
                     months,
-                    zones.east.data,
+					zones.west.data,
                     zones.centre.data,
-                    zones.west.data,
+					zones.east.data,
                     zones.bangui.data
                 ],
                 types: {
-                    "Fatalities East": 'area-spline',
-                    "Fatalities Centre": 'area-spline',
-                    "Fatalities West": 'area-spline',
-                    "Fatalities Bangui": 'area-spline'
+					"West": 'area-spline',
+                    "Centre": 'area-spline',
+					"East": 'area-spline',
+                    "Bangui": 'area-spline'
                 }
             },
             axis: {
@@ -125,8 +128,8 @@ var CafChart = function(){
                 show: true,
                 position: 'inset',
                 inset: {
-                    anchor: 'top-left',
-                    x: 5,
+                    anchor: 'top-right',
+                    x: 78,
                     y: 0,
                     step: 2
                 }
@@ -206,9 +209,9 @@ var CafChart = function(){
             {
                 columns: [
                     months,
-                    zones.east.data,
+					zones.west.data,
                     zones.centre.data,
-                    zones.west.data,
+					zones.east.data,
                     zones.bangui.data
                 ]
             }

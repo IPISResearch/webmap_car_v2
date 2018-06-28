@@ -400,6 +400,12 @@ body.dashboard #legend.show{
     display: none;
 }
 
+#chartlabel{
+    position: absolute;
+    left: 50px;
+    top: 12px;
+}
+
 #chartselect{
     position: absolute;
     height: 8px;
@@ -420,7 +426,7 @@ body.dashboard #legend.show{
     background-color: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(211, 211, 211, 0.7);
     top: 5px;
-    left: 44px;
+    right: 20px;
     background-image: url("../_img/caf_zones_inset.png");
     background-size: contain;
     background-position: center center;
