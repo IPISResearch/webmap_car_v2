@@ -254,6 +254,12 @@ var UI = function(){
 
     me.appendLayerFilters = function(layer,layerContainer){
         if (layer.filters) layer.filters.forEach(function(filter){
+
+            if (layerContainer.querySelector(".filterlabel")){
+                // filters aleady present - this happens on base layer switch
+                return;
+            }
+
             var filterContainer = div("filter");
             var filterLabel  = div("filterlabel",filter.label);
 
