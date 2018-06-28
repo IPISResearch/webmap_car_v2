@@ -94,6 +94,9 @@ var CafChart = function(){
                 height: 150,
                 width: w
             },
+			color: {
+				pattern: ['#85A308', '#D97713', '#0074A7', '#DA0E00']
+			},
             data: {
                 x: 'x',
                 columns: [
