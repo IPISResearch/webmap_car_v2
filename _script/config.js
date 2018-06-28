@@ -24,6 +24,7 @@ var Config = {
   baselayers:[
     {index: 1, id: "satellite", label: "Satellite", url:"ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
     {index: 2, id: "streets", label: "Streets", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
+    {index: 4, id: "streetscar", label: "Streets CAR", url:"ipisresearch/cjix950k084i72rno4tpu5mkm"},
     {index: 3, id: "empty", label: "Empty", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
   ],
   defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
