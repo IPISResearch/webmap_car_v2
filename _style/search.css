@@ -74,6 +74,8 @@ body.loading #searchbox{
     background-position: 4px -297px;
 }
 
+#searchresults .result.i0,
+.inlinelegende div.i0,
 #searchresults .result.i1,
 .inlinelegende div.i1{
     background-position: 4px -238px;
@@ -100,9 +102,7 @@ body.loading #searchbox{
 }
 
 #searchresults .result.i6,
-.inlinelegende div.i6,
-#searchresults .result.i0,
-.inlinelegende div.i0{
+.inlinelegende div.i6{
     background-position: 4px -317px;
 }
 
