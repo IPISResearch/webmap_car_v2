@@ -418,7 +418,7 @@ var Config = {
     miningActivities:{
       id: "miningactivities",
       filterId: 18,
-      label: "Recent mining activities <small>(2013-2016)</small>",
+      label: "Recent mining activities <small>(2013-2017)</small>",
       source: "http://ipis.annexmap.net/api/data/caf_dev/miningactivities",
       sourceId: "miningactivities",
       display:{
