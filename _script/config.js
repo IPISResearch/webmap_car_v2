@@ -66,7 +66,7 @@ var Config = {
           {label: "Pastoralism", value:3, color: "silver"},
           {label: "Pillage", value:4, color: "silver"},
           {label: "Abduction", value:5, color: "silver"},
-          {label: "Peul", value:6, color: "silver"},
+          {label: "Fulani", value:6, color: "silver"},
           {label: "Humanitarian", value:7, color: "silver"}
         ],onFilter: Data.updateFilter,filterProperty: "keyIssues",array:true}
         //{id: "workers", index: 7, label: "Nombre de creuseurs",items:[
@@ -387,7 +387,7 @@ var Config = {
               'base': 5,
               'stops': [[4, 5], [8, 6], [14, 80]]
             },
-            'circle-opacity': 0.3,
+            'circle-opacity': 0.7,
             'circle-stroke-width': 0.5,
             'circle-stroke-color': "white"
           },
