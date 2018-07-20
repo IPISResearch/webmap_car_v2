@@ -186,9 +186,10 @@ var Data = function () {
       //incidents.colorsForActor[actor] = "#" + incidents.pallette[index];
     });
 
-    return result.sort(function (a, b) {
-      return a.index < b.index ? 1 : -1;
-    });
+    return result.sort(
+      function (a, b) {
+      return a.index == b.index ? (a.label > b.label ? 1 : -1) : (a.index < b.index ? 1 : -1);
+    });;
 
   };
 

@@ -461,34 +461,13 @@ var MapService = (function () {
 
 
       paint = {
-
-        // Increase the heatmap color weight weight by zoom level
-        // heatmap-intensity is a multiplier on top of heatmap-weight
-        "heatmap-intensity": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          2, 0.0005,
-          7, 0.07,
-          9, 0.2,
-          10, 0.3,
-          11, 1
-        ],
         // Adjust the heatmap radius by zoom level
         "heatmap-radius": [
           "interpolate",
-          ["linear"],
+          ["exponential", 2],
           ["zoom"],
-          0, 1,
-          13, 50
-        ],
-        // Transition from heatmap to circle layer by zoom level
-        "heatmap-opacity": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          8, 0.8,
-          15, 0.2
+          0, 0,
+          18, 5000
         ]
       };
 

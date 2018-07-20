@@ -338,7 +338,7 @@ body.dashboard #menu{
     background-position: 0 -24px;
 }
 
-#baselayers div.streets:after, #baselayers div.streetscar:after{
+#baselayers div.streets:after{
     background-position: 0 -72px;
 }
 
@@ -488,7 +488,7 @@ body.dashboard #legend.show{
 }
 
 body.listVisible #chartcontainer{
-    right: 645px;
+    right: 535px;
 }
 
 body.menuHidden #chartcontainer{
@@ -1049,7 +1049,7 @@ body.disclaimer #disclaimer, body.info #info{
     background-color: white;
     background-color: rgba(255,255,255,0.9);
     font-family: helvatica, Arial, sans-serif;
-    width: 360px;
+    width: 250px;
     right: 275px;
     z-index: 99;
     -webkit-transition: all 0.5s;

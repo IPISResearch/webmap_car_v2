@@ -23,8 +23,7 @@ var Config = {
   // baselayer info
   baselayers:[
     {index: 1, id: "satellite", label: "Satellite", url:"ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
-    {index: 2, id: "streets", label: "Streets", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
-    {index: 4, id: "streetscar", label: "Streets CAR", url:"ipisresearch/cjix950k084i72rno4tpu5mkm"},
+    {index: 2, id: "streets", label: "Streets", url:"ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
     {index: 3, id: "empty", label: "Empty", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
   ],
   defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
@@ -202,7 +201,7 @@ var Config = {
       placeholder: true,
       id: "miningsites_placeholder",
       filterId: 14,
-      label: "Mining Sites <small>(2018)</small>",
+      label: "Mining Sites <small>(2017)</small>",
       source: "http://ipis.annexmap.net/api/data/caf_dev/miningsites",
       sourceId: "miningsites_base",
       display:{
@@ -333,11 +332,7 @@ var Config = {
           switch (item.properties.mineral){
             case "Diamond":
             case "Gold":
-            case "Iron":
-            case "Copper":
-            case "Uranium":
-            case "Cassiterite":
-            case "Manganese":
+            case "Gold & Diamond":
             substance = item.properties.mineral;
             break;
             default:
@@ -353,11 +348,7 @@ var Config = {
         var filterItems = [
           {value: "Diamond",  color:  "#78bfcc"},
           {value: "Gold",  color:  "#cca621"},
-          {value: "Iron",  color:  "#c6d4dc"},
-          {value: "Copper",  color:  "#a14f1c"},
-          {value: "Uranium",  color:  "#99d921"},
-          {value: "Cassiterite",  color:  "#3b649f"},
-          {value: "Manganese",  color:  "#a96594"},
+          {value: "Gold & Diamond",  color:  "#7dd921"},
           {value: "Other",  color:  "#a3b4aa"}
         ];
 
@@ -396,7 +387,7 @@ var Config = {
               'base': 5,
               'stops': [[4, 5], [8, 6], [14, 80]]
             },
-            'circle-opacity': 0.9,
+            'circle-opacity': 0.3,
             'circle-stroke-width': 0.5,
             'circle-stroke-color': "white"
           },
@@ -422,11 +413,18 @@ var Config = {
       source: "http://ipis.annexmap.net/api/data/caf_dev/miningactivities",
       sourceId: "miningactivities",
       display:{
-        type: 'heatmap',
-        colors: [
-          {step: 0, color: "#dbdbdb" , opacity: 0},
-          {step: 1, color: "#a1a1a1" , opacity: 1}
+        type: 'circle',
+        radius: [
+          "interpolate",
+          ["exponential", 2],
+          ["zoom"],
+          0, 0,
+          18, 6000
         ],
+        color: "rgb(204, 155, 120)",
+        circleBlur: 0.7,
+        circleStrokeWidth: 0,
+        circleStrokeColor: "transparent",
         visible: true,
         canToggle: true,
         zIndex:97
