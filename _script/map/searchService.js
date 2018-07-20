@@ -20,6 +20,9 @@ var SearchService = (function() {
             dataset = result.result.filter(function (el) {
               return el.s != null;
             });
+            for (var i = 0; i < dataset.length; i++) {
+              dataset[i].s_ = dataset[i].s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+            }
         });
 
     };
@@ -32,12 +35,12 @@ var SearchService = (function() {
 
         function contains(searchString) {
             return function(element) {
-                return element.s.indexOf(searchString) >= 0;
+                return element.s_.indexOf(searchString.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")) >= 0;
             }
         }
 
         searchPage = 0;
-        searchResults = dataset.filter(contains(searchString.toLowerCase()));
+        searchResults = dataset.filter(contains(searchString));
 
         return searchResults;
     };
