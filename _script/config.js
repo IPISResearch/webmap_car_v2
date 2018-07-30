@@ -66,8 +66,8 @@ var Config = {
           {label: "Pastoralism", value:3, color: "silver"},
           {label: "Pillage", value:4, color: "silver"},
           {label: "Abduction", value:5, color: "silver"},
-          {label: "Fulani", value:6, color: "silver"},
-          {label: "Humanitarian", value:7, color: "silver"}
+          {label: "Fulani targeted", value:6, color: "silver"},
+          {label: "Humanitarian targeted", value:7, color: "silver"}
         ],onFilter: Data.updateFilter,filterProperty: "keyIssues",array:true}
         //{id: "workers", index: 7, label: "Nombre de creuseurs",items:[
         //  {label: "Aucun", value:0},

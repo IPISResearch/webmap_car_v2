@@ -172,7 +172,7 @@ var Data = function () {
   me.getActors = function(){
     var result = [];
 
-    var order = ["Seleka", "Anti-balaka", "Civilians", "Pastoralists","LRA"].reverse();
+    //var order = ["Seleka", "Anti-balaka", "Civilians", "Pastoralists","LRA"].reverse();
     //incidents.pallette = incidents.pallette || palette('tol-rainbow', incidents.actors.length);
     //incidents.colorsForActor = {};
 
@@ -181,15 +181,20 @@ var Data = function () {
         label: actor,
         value: actor,
         color: "silver",
-        index: order.indexOf(actor)
+        index: 1
       });
       //incidents.colorsForActor[actor] = "#" + incidents.pallette[index];
     });
 
     return result.sort(
       function (a, b) {
-      return a.index == b.index ? (a.label > b.label ? 1 : -1) : (a.index < b.index ? 1 : -1);
+      return a.label > b.label ? 1 : -1;
     });;
+
+    //return result.sort(
+    //  function (a, b) {
+    //  return a.index == b.index ? (a.label > b.label ? 1 : -1) : (a.index < b.index ? 1 : -1);
+    //});;
 
   };
 
