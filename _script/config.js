@@ -17,13 +17,14 @@ var Config = {
     maxZoom: 18,
     minZoom: 5
   },
-  defaultBaseLayerIndex : 2,
+  defaultBaseLayerIndex : 4,
   // if preLoad is defined, this occurs before the map is shown - used to pre-generate datasets etc.
   preLoad : function(){Data.init();},
   // baselayer info
   baselayers:[
     {index: 1, id: "satellite", label: "Satellite", url:"ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
-    {index: 2, id: "streets", label: "Streets", url:"ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
+    {index: 4, id: "streetscar", label: "Streets (IPIS)", url:"ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
+    {index: 2, id: "streets", label: "Streets (OSM)", url:"ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
     {index: 3, id: "empty", label: "Empty", url:"ipisresearch/cjav3e31blm5w2smunhb32kzm"}
   ],
   defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
@@ -104,16 +105,16 @@ var Config = {
       filterId: 3,
       filters: [
         {id: "group", index: 41, label: "Group", items:[
-          {label: "Anti-Balaka", value: "Anti-balaka", color : "#9fdad7"},
-          {label: "FPRC", value: "FPRC", color: "#c0e4c3"},
-          {label: "UPC", value: "UPC", color: "#8cbbca"},
-          {label: "RJ", value: "RJ", color: "#e3b258"},
           {label: "3R", value: "3R", color: "#ece26f"},
+          {label: "Anti-Balaka", value: "Anti-balaka", color : "#9fdad7"},
+          {label: "FDPC", value: "FDPC", color: "#e4d785"},
+          {label: "FPRC", value: "FPRC", color: "#c0e4c3"},
           {label: "LRA", value: "LRA", color: "#ca9487"},
           {label: "MPC", value: "MPC", color: "#e4cc95"},
+          {label: "RJ", value: "RJ", color: "#e3b258"},
           {label: "RPRC", value: "RPRC", color: "#7ab38e"},
-          {label: "FDPC", value: "FDPC", color: "#e4d785"},
           {label: "Seleka", value: "Seleka" , color: "#bdddb0"},
+          {label: "UPC", value: "UPC", color: "#8cbbca"},
           {label: "none", value: "none", color: "#c3bebf"}
         ], onFilter: Data.updateInfluenceZonesFilter,filterProperty: "group"},
         {id: "year", index: 42, label: "Year", singleValue: true, items:[
@@ -619,6 +620,7 @@ var Config = {
         zIndex:91
       }
     },
+    /*
     cattletradepoints:{
       id: "cattletradepoints",
       filterId: 23,
@@ -664,6 +666,7 @@ var Config = {
       }
 
     },
+    */
     cattletrade_placeholder:{
       id: "cattletrade",
       placeholder: true,
