@@ -286,7 +286,7 @@ var Config = {
             },
             'circle-radius': {
               'base': 5,
-              'stops': [[4, 5], [8, 6], [14, 80]]
+              'stops': [[4, 5], [8, 7], [12, 10], [16, 40], [18, 80]]
             },
             'circle-opacity': 0.9,
             'circle-stroke-width': 0.5,
@@ -386,7 +386,7 @@ var Config = {
             },
             'circle-radius': {
               'base': 5,
-              'stops': [[4, 5], [8, 6], [14, 80]]
+              'stops': [[4, 5], [8, 7], [12, 10], [16, 40], [18, 80]]
             },
             'circle-opacity': 0.7,
             'circle-stroke-width': 0.5,
@@ -429,6 +429,25 @@ var Config = {
         visible: true,
         canToggle: true,
         zIndex:97
+      }
+    },
+    miningzoneskp:{
+      id: "miningzoneskp",
+      filterId: 26,
+      label: "KP Compliant Zones for diamond export",
+      source: "http://ipis.annexmap.net/api/data/caf_dev/miningzoneskp",
+      sourceId: "miningzoneskp",
+      display:{
+        type: 'fill',
+        fillColor: '#78bfcc',
+        fillOpacity: 0.5,
+        hoverOpacity: 0.8,
+        visible: false,
+        canToggle: true,
+        zIndex:92
+      },
+      onClick: function(item,lngLat){
+        UI.popup(item.properties,"miningzoneskpPopup",lngLat,true);
       }
     },
     mineralConcessions:{
