@@ -434,7 +434,7 @@ var Config = {
     miningzoneskp:{
       id: "miningzoneskp",
       filterId: 26,
-      label: "KP Compliance Zones 2017",
+      label: "KP Compliance Zones <small>(2017)</small>",
       source: "http://ipis.annexmap.net/api/data/caf_dev/miningzoneskp",
       sourceId: "miningzoneskp",
       display:{
