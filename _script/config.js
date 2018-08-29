@@ -434,7 +434,7 @@ var Config = {
     miningzoneskp:{
       id: "miningzoneskp",
       filterId: 26,
-      label: "KP Compliant Zones for diamond export",
+      label: "KP Compliance Zones 2017",
       source: "http://ipis.annexmap.net/api/data/caf_dev/miningzoneskp",
       sourceId: "miningzoneskp",
       display:{
