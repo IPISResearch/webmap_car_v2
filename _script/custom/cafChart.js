@@ -155,7 +155,7 @@ var CafChart = function(){
                 chartSelect.style.width = selectWidth + "px";
 
 
-                me.buildYears();
+                buildYears(ticks,offsetLeft);
 
                 dotStart.left = (currentStartMonthIndex || 0) * monthWidth;
                 dotStart.min = 0;
@@ -175,6 +175,54 @@ var CafChart = function(){
         });
 
         setupDotDrag();
+
+
+		function buildYears(ticks,startTick){
+			var monthCount = months.length-2;
+			monthWidth = selectWidth/monthCount;
+
+
+			var startMonth = 4;
+			var yearCount = Math.floor((monthCount-startMonth)/12);
+			var endMonth = monthCount-(yearCount*12)-startMonth;
+
+			var startYear = parseInt(months[1].split("-")[0]);
+
+			yearAxis.innerHTML = "";
+
+			var even = 1;
+			function yearblock(year){
+				var div = document.createElement("div");
+				var label = year === startYear ? year : "Jan " + year;
+				div.className = "yearblock " + "block" + even;
+				div.innerHTML = "<i>" + label + "</i>";
+				even = 1-even;
+				return div;
+			}
+
+
+			for (var i = 0; i<yearCount+2;i++){
+				var block = yearblock(startYear+i);
+				block.style.width =  Math.round(12*monthWidth) + "px";
+				if (i===0) {
+					block.style.width = Math.round(startMonth*monthWidth) + "px";
+					block.style.left = "0";
+				}else{
+					var tick = ticks[((i-1)*12 + startMonth)];
+					var left = tick
+						? getTickTranslation(tick) - startTick
+						: ((i-1)*12 + startMonth) * monthWidth;
+
+					block.style.left = left + "px";
+				}
+
+				if (i===yearCount+1) block.style.width =  Math.round(endMonth*monthWidth) + "px";
+
+
+				yearAxis.appendChild(block);
+			}
+
+		}
 
 
         function resizeChart(){
@@ -218,37 +266,6 @@ var CafChart = function(){
         );
     };
 
-    me.buildYears = function(){
-        var monthCount = months.length-2;
-        monthWidth = selectWidth/monthCount;
-
-        var startMonth = 4;
-        var yearCount = Math.floor((monthCount-startMonth)/12);
-        var endMonth = monthCount-(yearCount*12)-startMonth;
-
-        var startYear = parseInt(months[1].split("-")[0]);
-
-        yearAxis.innerHTML = "";
-
-        var even = 1;
-        function yearblock(year){
-            var div = document.createElement("div");
-            div.className = "yearblock " + "block" + even;
-            div.innerHTML = "<i>" + year + "</i>";
-            even = 1-even;
-            return div;
-        }
-
-        for (var i = 0; i<yearCount+2;i++){
-            var block = yearblock(startYear+i);
-            block.style.width =  Math.round(12*monthWidth) + "px";
-            if (i==0) block.style.width = Math.round(startMonth*monthWidth) + "px";
-            if (i==yearCount+1) block.style.width =  Math.round(endMonth*monthWidth) + "px";
-            yearAxis.appendChild(block);
-        }
-
-
-    };
 
     function setupDotDrag(){
         var dragElement;
@@ -256,6 +273,7 @@ var CafChart = function(){
 
         setupDrag(dotStart);
         setupDrag(dotEnd);
+		updateMinMax();
 
         document.body.addEventListener("mousemove",function(e){
             if (isDragging){
@@ -266,9 +284,19 @@ var CafChart = function(){
                 if (target > dragElement.max) target=dragElement.max;
                 dragElement.left = target;
                 dragElement.style.left = target + "px";
-                if (dragElement.id == "selectbar"){
+                if (dragElement.id === "selectbar"){
                     updateHandles();
                 }else{
+
+                    if (dragElement.i){
+						var monthCount = months.length-2;
+						var index = Math.round(target/monthWidth);
+						index = Math.min(index,monthCount);
+
+						dragElement.i.innerHTML = formatDate(months[index+1]);
+						dragElement.classList.add("info");
+                    }
+
                     updateBar();
                     //updateYears();
                 }
@@ -281,6 +309,8 @@ var CafChart = function(){
                 dragElement.classList.remove("active");
                 dotStart.classList.remove("baractive");
                 dotEnd.classList.remove("baractive");
+				dotStart.classList.remove("info");
+				dotEnd.classList.remove("info");
                 updateYears();
                 updateMinMax();
             }
@@ -288,6 +318,7 @@ var CafChart = function(){
 
         function setupDrag(elm){
             //updateMinMax();
+			elm.i = elm.querySelector("i");
             elm.onmousedown = function(e){
                 dragElement = elm;
                 dragElement.classList.add("ontop");
@@ -382,6 +413,16 @@ var CafChart = function(){
 
         }
     }
+
+	function formatDate(d){
+		if (d){
+			var p = d.split("-");
+			if (p && p.length===3){
+				return Data.monthName(p[1]) + " " + p[0];
+			}
+		}
+		return d;
+	}
 
     EventBus.on(EVENT.filterChanged,me.update);
 

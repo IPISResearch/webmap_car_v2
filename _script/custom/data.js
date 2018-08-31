@@ -819,6 +819,7 @@ function monthName(i){
   }
   return result;
 }
+me.monthName = monthName;
 
 function normalizeDate(d){
   if (d){
