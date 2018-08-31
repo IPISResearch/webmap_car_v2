@@ -908,7 +908,6 @@ var Config = {
 				});
 				var parent = this.labelElm.parentElement;
 
-				console.error(this.filters);
 				this.filters = this.filters_pre || [];
 				this.filters.push({
 					id: "year",

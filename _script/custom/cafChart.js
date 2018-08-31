@@ -207,6 +207,7 @@ var CafChart = function(){
 				if (i===0) {
 					block.style.width = Math.round(startMonth*monthWidth) + "px";
 					block.style.left = "0";
+					block.style.border = "none";
 				}else{
 					var tick = ticks[((i-1)*12 + startMonth)];
 					var left = tick
