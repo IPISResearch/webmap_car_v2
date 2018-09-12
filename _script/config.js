@@ -252,7 +252,7 @@ var Config = {
 			id: "miningsites_placeholder",
 			filterId: 14,
 			label: "Mining Sites <small>(2017)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/miningsites",
+			source: "http://ipis.annexmap.net/api/data/caf/miningsites",
 			sourceId: "miningsites_base",
 			display: {
 				type: 'circle',
@@ -368,7 +368,7 @@ var Config = {
 			id: "miningsites2014_placeholder",
 			filterId: 24,
 			label: "Mining Sites <small>(2014)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/miningsites2014",
+			source: "http://ipis.annexmap.net/api/data/caf/miningsites2014",
 			sourceId: "miningsites2014_base",
 			display: {
 				type: 'circle',
@@ -474,7 +474,7 @@ var Config = {
 			id: "miningactivities",
 			filterId: 18,
 			label: "Recent mining activities <small>(2013-2017)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/miningactivities",
+			source: "http://ipis.annexmap.net/api/data/caf/miningactivities",
 			sourceId: "miningactivities",
 			display: {
 				type: 'circle',
@@ -498,7 +498,7 @@ var Config = {
 			id: "miningzoneskp",
 			filterId: 26,
 			label: "KP Compliance Zones <small>(2017)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/miningzoneskp",
+			source: "http://ipis.annexmap.net/api/data/caf/miningzoneskp",
 			sourceId: "miningzoneskp",
 			display: {
 				type: 'fill',
@@ -517,7 +517,7 @@ var Config = {
 			id: "mineralconcessions",
 			filterId: 5,
 			label: "Mineral Concessions",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/mineralconcessions",
+			source: "http://ipis.annexmap.net/api/data/caf/mineralconcessions",
 			sourceId: "mineralconcessions",
 			display: {
 				type: 'fill',
@@ -591,7 +591,7 @@ var Config = {
 			id: "oilconcessions",
 			filterId: 10,
 			label: "Oil Concessions",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/oilconcessions",
+			source: "http://ipis.annexmap.net/api/data/caf/oilconcessions",
 			sourceId: "oilconcessions",
 			display: {
 				type: 'fill',
@@ -610,7 +610,7 @@ var Config = {
 			id: "forestryconcessions",
 			filterId: 6,
 			label: "Forestry Concessions",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/forestryconcessions",
+			source: "http://ipis.annexmap.net/api/data/caf/forestryconcessions",
 			sourceId: "forestryconcession",
 			display: {
 				type: 'fill',
@@ -629,7 +629,7 @@ var Config = {
 			id: "huntingzones",
 			filterId: 7,
 			label: "Hunting Zones",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/huntingzones",
+			source: "http://ipis.annexmap.net/api/data/caf/huntingzones",
 			sourceId: "huntingzones",
 			display: {
 				type: 'fill',
@@ -648,7 +648,7 @@ var Config = {
 			id: "protectedareas",
 			filterId: 4,
 			label: "Protected Areas <small>(2017)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/protectedareas",
+			source: "http://ipis.annexmap.net/api/data/caf/protectedareas",
 			sourceId: "protectedareas",
 			display: {
 				type: 'fill',
@@ -712,7 +712,7 @@ var Config = {
 		  id: "cattletradepoints",
 		  filterId: 23,
 		  label: "Cattle transhumance and trade points",
-		  source: "http://ipis.annexmap.net/api/data/caf_dev/cattletradepoints",
+		  source: "http://ipis.annexmap.net/api/data/caf/cattletradepoints",
 		  sourceId: "cattletradepoints",
 		  display:{
 			type: 'circle',
@@ -759,7 +759,7 @@ var Config = {
 			placeholder: true,
 			filterId: 13,
 			label: "Cattle transhumance and trade routes",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/cattletrade",
+			source: "http://ipis.annexmap.net/api/data/caf/cattletrade",
 			sourceId: "cattletrade",
 			display: {
 				type: 'line',
@@ -825,7 +825,7 @@ var Config = {
 			id: "cattleconcentration",
 			filterId: 12,
 			label: "Cattle Concentrations",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/cattleconcentration",
+			source: "http://ipis.annexmap.net/api/data/caf/cattleconcentration",
 			sourceId: "cattleconcentration",
 			display: {
 				type: 'fill',
@@ -868,7 +868,7 @@ var Config = {
 			id: "troopLocation",
 			filterId: 15,
 			label: "Troop location",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/trooplocation",
+			source: "http://ipis.annexmap.net/api/data/caf/trooplocation",
 			sourceId: "troopLocation",
 			display: {
 				type: 'circle',
@@ -980,7 +980,7 @@ var Config = {
 		id: "poaching",
 		filterId: 8,
 		label: "Poaching",
-		source: "http://ipis.annexmap.net/api/data/caf_dev/poaching",
+		source: "http://ipis.annexmap.net/api/data/caf/poaching",
 		sourceId: "poaching",
 		display:{
 		type: 'fill',
@@ -996,7 +996,7 @@ var Config = {
 		id: "troopmovement_placeholder",
 		filterId: 16,
 		label: "Troop movement",
-		source: "http://ipis.annexmap.net/api/data/caf_dev/troopmovement",
+		source: "http://ipis.annexmap.net/api/data/caf/troopmovement",
 		sourceId: "troopmovement",
 		display:{
 		type: 'line',
@@ -1047,7 +1047,7 @@ var Config = {
 			id: "armstrafficking_placeholder",
 			filterId: 17,
 			label: "Arms Trafficking",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/armstraffickin",
+			source: "http://ipis.annexmap.net/api/data/caf/armstraffickin",
 			sourceId: "armstrafficking",
 			display: {
 				type: 'line',
@@ -1107,7 +1107,7 @@ var Config = {
 			id: "airstrips",
 			filterId: 19,
 			label: "Airstrips",
-			source: "http://ipis.annexmap.net/api/data/caf_dev/airstrips",
+			source: "http://ipis.annexmap.net/api/data/caf/airstrips",
 			sourceId: "airstrips",
 			display: {
 				//type: 'circle',
