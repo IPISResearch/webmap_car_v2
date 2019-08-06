@@ -3,6 +3,7 @@ var version = "0.0.1";
 var Config = {
 	mapId: "CAFV2",
 	apiScope: "caf",
+	apiScopeDev: "caf",
 	useMapBoxInspector: false,
 	templateURL: "_templates/main.html",
 	showDisclaimerOnFirstUse: false,
@@ -24,10 +25,10 @@ var Config = {
 	},
 	// baselayer info
 	baselayers: [
-		{index: 1, id: "satellite", label: "Satellite", url: "ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
-		{index: 4, id: "streetscar", label: "Streets (IPIS)", url: "ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
-		{index: 2, id: "streets", label: "Streets (OSM)", url: "ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
-		{index: 3, id: "empty", label: "Empty", url: "ipisresearch/cjav3e31blm5w2smunhb32kzm"}
+		{index: 1, id: "satellite", label: "Satellite", url: "mapbox://styles/ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
+		{index: 4, id: "streetscar", label: "Streets (IPIS)", url: "mapbox://styles/ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
+		{index: 2, id: "streets", label: "Streets (OSM)", url: "mapbox://styles/ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
+		{index: 3, id: "empty", label: "Empty", url: "mapbox://styles/ipisresearch/cjav3e31blm5w2smunhb32kzm"}
 	],
 	defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
 	// layer info
@@ -52,13 +53,13 @@ var Config = {
 			},
 			onLoaded: function () {
 				console.log("loaded");
-				CafChart.render();
+				//CafChart.render();
 				//Chart.update();
 			},
 			onToggle: function (visible) {
-				var chartbutton = document.getElementById("chartbutton");
+				/*var chartbutton = document.getElementById("chartbutton");
 				var closeChart = document.getElementById("closeChart");
-				visible ? chartbutton.click() : closeChart.click();
+				visible ? chartbutton.click() : closeChart.click();*/
 			},
 			filterId: 1,
 			filters: [

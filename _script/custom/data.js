@@ -167,8 +167,9 @@ var Data = function () {
       }
     }
   };
-
-
+  
+ 
+  
   me.getActors = function(){
     var result = [];
 
