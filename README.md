@@ -1,5 +1,5 @@
-# webmapping_base
-Empty starting project for new webmaps
+# CAF map
+Quick start
 
 use `npm install` to install dependencies  
 use `grunt init` to install and setup IPIS core libraries  
