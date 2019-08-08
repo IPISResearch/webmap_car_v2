@@ -1,7 +1,7 @@
 {
   "name": "IPIS_webmapping_base",
   "version": "0.3.0",
-  "description": "Bae template for IPIS webmapping",
+  "description": "Base template for IPIS webmapping",
   "main": "index.html",
   "repository": "https://github.com/IPISResearch/webmapping_base",
   "author": "IPIS",

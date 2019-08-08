@@ -63,10 +63,19 @@ var Config = {
 							feature.properties.workers = parseInt(feature.properties.workers_numb);
 							for (var i = 0, max = feature.properties.mineralList.length; i<max; i++){
 								feature.properties.mineralList[i] = feature.properties.mineralList[i].trim();
-								if (minerals.indexOf(feature.properties.mineralList[i]) <0) minerals.push(feature.properties.mineralList[i]);
+								if (minerals.indexOf(feature.properties.mineralList[i]) < 0) minerals.push(feature.properties.mineralList[i]);
 							}
 							
 							feature.properties.mineral = feature.properties.mineralList[0];
+							feature.properties.chantiers = feature.properties.chantiers_numb;
+							
+							// services are represented in one line
+							feature.properties.servicesList = [];
+							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
+
+							feature.properties.services = feature.properties.servicesList.filter(Boolean).join(",");
+
+							
 						});
 						
 						//console.error(minerals);
@@ -123,7 +132,22 @@ var Config = {
 			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 			},
 			onLoaded : function(){
-				Chart.render();
+				Chart.render(); // render chart
+
+				var canvas = map.getCanvasContainer(); // target canvas
+
+
+				/* map.addLayer({
+					"id": layer.id,
+					"type": "fill",
+					"source": sourceId,
+					"paint": {
+					"fill-outline-color": "rgba(0,0,0,0.1)",
+					"fill-color": "rgba(0,0,0,0.1)"
+					}
+				}); */ // Place polygon under these labels.
+
+				// console.log(x);
 			},
 			onFilter : function(){
 				Chart.render();
@@ -236,7 +260,7 @@ var Config = {
 			},
 			onClick: function(item){
 			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-			}
+			},
 		},
 		miningActivities: {
 			id: "miningactivities",
