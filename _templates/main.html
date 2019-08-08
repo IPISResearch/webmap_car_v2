@@ -55,8 +55,8 @@
         </tr>
         {{/name}}
         <tr>
-            <th>Substance</th>
-            <td>{{{mineral}}}</td>
+            <th>Substance(s)</th>
+            <td>{{{minerals}}}</td>
         </tr>
         <tr>
             <th>Source</th>
@@ -73,55 +73,6 @@
 
 
 
-<!--roadblockPopup-->
-<div class="popup">
-    <h2>Roadblock: {{{location}}}</h2>
-    <div class="popupColLeft">
-        <table class="infotable" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-              <th>Date</th>
-              <td>{{formattedDate}}</td>
-          </tr>
-          <tr>
-                <th>Operator(s)</th>
-                <td>{{operator}}</td>
-            </tr>
-            <tr>
-                <th>Operator(s) Type</th>
-                <td>{{{operatortype}}}</td>
-            </tr>
-            <tr>
-                <th>Roadblock type</th>
-                <td>{{{type}}}</td>
-            </tr>
-            <!--
-            {{#description}}
-            <tr>
-                <th>Description</th>
-                <td>{{{description}}}</td>
-            </tr>
-            {{/description}}
-          -->
-        </table>
-    </div>
-</div>
-<!--/roadblockPopup-->
-
-<!--protectedAreaPopup-->
-<div class="popup">
-    <h2>Protected Area</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        <tr>
-            <th>Name</th>
-            <td>{{{nom_ap}}}</td>
-        </tr>
-        <tr>
-            <th>Type</th>
-            <td>{{{type_eng}}}</td>
-        </tr>
-    </table>
-</div>
-<!--/protectedAreaPopup-->
 
 <!--concessionPopup-->
 <div class="popup">
@@ -149,63 +100,6 @@
 </div>
 <!--/concessionPopup-->
 
-<!--forestryConcessionsPopup-->
-<div class="popup">
-    <h2>Forestry Concession</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        <tr>
-            <th>Date</th>
-            <td>{{{date_crea}}}</td>
-        </tr>
-        <tr>
-            <th>ID</th>
-            <td>{{{nom_pea}}}</td>
-        </tr>
-        <tr>
-            <th>Operator</th>
-            <td>{{{exploitant}}}</td>
-        </tr>
-    </table>
-</div>
-
-<!--/forestryConcessionsPopup-->
-
-
-<!--huntingZonesPopup-->
-<div class="popup">
-    <h2>Hunting Zone</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        {{#date_crea}}
-        <tr>
-            <th>Date</th>
-            <td>{{{date_crea}}}</td>
-        </tr>
-        {{/date_crea}}
-        {{#nom_zic}}
-        <tr>
-            <th>Name</th>
-            <td>{{{nom_zic}}}</td>
-        </tr>
-        {{/nom_zic}}
-    </table>
-</div>
-
-<!--/huntingZonesPopup-->
-
-<!--oilConcessionsPopup-->
-<div class="popup">
-    <h2>Oil Concession</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        {{#nom_ste}}
-        <tr>
-            <th>Name</th>
-            <td>{{{nom_ste}}}</td>
-        </tr>
-        {{/nom_ste}}
-    </table>
-</div>
-
-<!--/oilConcessionsPopup-->
 
 <!--miningzoneskpPopup-->
 <div class="popup">
@@ -241,64 +135,3 @@
 
 <!--/mineralConcessionsPopup-->
 
-
-<!--troopLocationPopup-->
-<div class="popup">
-    <h2>Troop Location {{{year}}}</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        <tr>
-            <th>Type</th>
-            <td>{{{type}}}</td>
-        </tr>
-        {{#description}}
-        <tr>
-            <th>Description</th>
-            <td>{{{description}}}</td>
-        </tr>
-        {{/description}}
-        {{#isHeadQuarter}}
-        <tr>
-            <th>HeadQuarter</th>
-            <td>Yes</td>
-        </tr>
-        {{/isHeadQuarter}}
-    </table>
-</div>
-
-<!--/troopLocationPopup-->
-
-
-<!--airstripPopup-->
-<div class="popup">
-    <h2>Airstrip</h2>
-    <table border="0" cellspacing="0" cellpadding="0" class="infotable">
-        <tr>
-            <th>Name</th>
-            <td>{{{name}}}</td>
-        </tr>
-        <tr>
-            <th>Status</th>
-            <td>{{{status}}}</td>
-        </tr>
-    </table>
-</div>
-
-<!--/airstripPopup-->
-
-<!--chart-->
-    <div id='chartmap'></div>
-    <div id='chart'></div>
-    <div id='chartlabel'>
-        Reported fatalities
-    </div>
-    <div id='chartclose'>
-        <button class="mapboxgl-popup-close-button" type="button" aria-label="Close Graph" id="closeChart">×</button>
-    </div>
-    <div id="chartselect">
-        <div id="yearaxis"></div>
-        <div id="selectbar"></div>
-        <div class="dot start" id="dotstart"><i></i>›</div>
-        <div class="dot end" id="dotend"><i></i>‹</div>
-    </div>
-
-<!--/chart-->

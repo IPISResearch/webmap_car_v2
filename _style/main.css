@@ -386,160 +386,55 @@ body.dashboard #legend.show{
 }
 
 
-#chartcontainer{
-    background-color: rgba(255, 255, 255, 0.9);
-    position: absolute;
-    bottom: 40px;
-    left: 10px;
-    right: 280px;
-    height: 140px;
-    border-radius: 4px;
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.1)
-}
-
-#chartContainer.hidden{
-    display: none;
-}
-
-#chartlabel{
-    position: absolute;
-    left: 50px;
-    top: 12px;
-    text-shadow: 0 0 0.2em #ffffff, 0 0 0.2em #ffffff;
-    font-weight: bold;
-}
-
-#chartselect{
-    position: absolute;
-    z-index: 100;
-    height: 8px;
-    left: 10px;
-    bottom: 11px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-#chartmap{
-    position: absolute;
-    width: 58px;
-    height: 49px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(211, 211, 211, 0.7);
-    top: 5px;
-    right: 20px;
-    background-image: url("../_img/caf_zones_inset.png");
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-#selectbar{
-    height: 8px;
-    background-color: rgba(72, 126, 30, 0.5);
-    position: absolute;
-    left: 0;
-}
-
-#selectbar:hover{
-    background-color: rgba(54, 96, 22, 0.7);
-    cursor: ew-resize;
-}
-
-#chartselect .dot{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    background-color: rgba(72, 126, 30, 1);
-    margin: -6px 0 0 -10px;
-    text-align: center;
-    color: white;
-    padding-top: 2px;
-}
-
-#chartselect .dot:hover{
-    background-color: rgba(54, 96, 22, 1);
-    cursor: ew-resize;
-}
-
-#chartselect .dot.active{
-    background-color: #D97713;
-}
-
-#chartselect .dot i {
-    display: none;
-}
-
-#chartselect .dot.info i{
-    display: inline-block;
-    position: absolute;
-    margin-top: -30px;
-    margin-left: -30px;
-    padding: 4px;
-    background-color: white;
-    border: 1px solid silver;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-    white-space: nowrap;
-    color: black;
-    font-size: 12px;
-
-}
-
-#chartselect .dot.ontop{
-    z-index: 12;
-}
-
-#chartselect #yearaxis{
-    position: absolute;
-    width: 110%;
-}
-
-#chartselect .yearblock{
-    position: absolute;
-    display: inline-block;
-    height: 8px;
-    text-align: left;
-    border-left: 3px solid black;
-}
-
-#chartselect .yearblock i{
-    font-style: normal;
-    font-size: 10px;
-    display: inline-block;
-    margin-top: 8px;
-}
-
-#chartselect .yearblock.block1{
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-body.listVisible #chartcontainer{
-    right: 535px;
-}
-
-body.menuHidden #chartcontainer{
-    right: 10px;
-}
-
-body.menuHidden.listVisible #chartcontainer{
-    right: 416px;
-}
-
 
 #chart{
-
+    margin-bottom: 10px;
 }
 
-#chart .c3-axis-x text{
-    fill-opacity: 0;
+
+#legend {
+    position:absolute;
+    bottom: 40px;
+    left: 10px;
+    opacity:0.9;
+    z-index: 100;
+    display: none;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
-#chart .c3-legend-background{
-    opacity: 0.7;
+#legend.show{
+    display: block;
+}
+#legend.hidden.show,
+body.dashboard #legend,
+body.dashboard #legend.show{
+    display: none;
+}
+
+#legend .charts {
+    margin: 5px;
+    width: 200px;
+    height: 330px;
+    padding: 4px;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+}
+
+
+#legend .charts h3{
+    margin: 0;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+#legend .c3-chart-arcs-title{
+    font-size: 3em;
+}
+#legend .c3-tooltip td{
+    white-space: nowrap;
 }
 
 

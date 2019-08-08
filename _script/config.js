@@ -1,7 +1,7 @@
 var version = "0.0.1";
 
 var Config = {
-	mapId: "CAFV2",
+	mapId: "CAFV3",
 	apiScope: "caf",
 	apiScopeDev: "caf",
 	useMapBoxInspector: false,
@@ -20,7 +20,7 @@ var Config = {
 	},
 	defaultBaseLayerIndex: 4,
 	// if preLoad is defined, this occurs before the map is shown - used to pre-generate datasets etc.
-	preLoad: function () {
+	__preLoad: function () {
 		Data.init();
 	},
 	// baselayer info
@@ -59,14 +59,14 @@ var Config = {
 						var minerals = [];
 						
 						data.features.forEach(function(feature){
-							feature.properties.minerals = feature.properties.minerals.split(",");
+							feature.properties.mineralList = feature.properties.minerals.split(",");
 							feature.properties.workers = parseInt(feature.properties.workers_numb);
-							for (var i = 0, max = feature.properties.minerals.length; i<max; i++){
-								feature.properties.minerals[i] = feature.properties.minerals[i].trim();
-								if (minerals.indexOf(feature.properties.minerals[i]) <0) minerals.push(feature.properties.minerals[i]);
+							for (var i = 0, max = feature.properties.mineralList.length; i<max; i++){
+								feature.properties.mineralList[i] = feature.properties.mineralList[i].trim();
+								if (minerals.indexOf(feature.properties.mineralList[i]) <0) minerals.push(feature.properties.mineralList[i]);
 							}
 							
-							feature.properties.mineral = feature.properties.minerals[0];
+							feature.properties.mineral = feature.properties.mineralList[0];
 						});
 						
 						//console.error(minerals);
@@ -83,8 +83,8 @@ var Config = {
 								index: 141,
 								label: "Minerals",
 								items: filterItems,
-								onFilter: MapService.genericFilter,
-								filterProperty: "mineral",
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "mineralList",
 								array: true
 							}
 						];
@@ -121,6 +121,12 @@ var Config = {
 			popupOnhover: "name",
 			onClick: function(item){
 			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+			},
+			onLoaded : function(){
+				Chart.render();
+			},
+			onFilter : function(){
+				Chart.render();
 			}
 		},
 		miningsites_old: {
@@ -159,14 +165,16 @@ var Config = {
 						var data = _data._2014;
 						
 						data.features.forEach(function(feature){
-							feature.properties.mineral = mineralMapping[feature.properties.mineral] || feature.properties.mineral;
+							feature.properties.mineral = mineralMapping[feature.properties.mineral] || "Autre";
+							feature.properties.minerals = feature.properties.mineral;
 							if (minerals.indexOf(feature.properties.mineral)<0) minerals.push(feature.properties.mineral);
 						});
 						
 						_data._2017.features.forEach(function(feature){
 							feature.properties.id = "_2017" + feature.properties.id;
 							feature.properties.mineral = feature.properties.substance_1;
-							feature.properties.mineral = mineralMapping[feature.properties.mineral] || feature.properties.mineral;
+							feature.properties.mineral = mineralMapping[feature.properties.mineral] || "Autre";
+							feature.properties.minerals = feature.properties.mineral;
 							if (minerals.indexOf(feature.properties.mineral)<0) minerals.push(feature.properties.mineral);
 							data.features.push(feature);
 							//console.log(feature);
