@@ -46,18 +46,28 @@
 
 
 <!--minePopup-->
-    <h2>Mining site</h2>
+    <h2>Site Minière</h2>
     <table border="0" cellspacing="0" cellpadding="0" class="infotable">
+        {{#name}}
+        <tr>
+            <th>Nom</th>
+            <td>{{{name}}}</td>
+        </tr>
+        {{/name}}
         <tr>
             <th>Substance</th>
             <td>{{{mineral}}}</td>
         </tr>
-        <!--
         <tr>
             <th>Source</th>
             <td>{{{source}}}</td>
         </tr>
-        -->
+        {{#workers}}
+        <tr>
+            <th>Nombre de creuseurs</th>
+            <td>{{{workers}}}</td>
+        </tr>
+        {{/workers}}
     </table>
 <!--/minePopup-->
 

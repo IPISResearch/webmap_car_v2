@@ -31,345 +31,204 @@ var Config = {
 		{index: 3, id: "empty", label: "Empty", url: "mapbox://styles/ipisresearch/cjav3e31blm5w2smunhb32kzm"}
 	],
 	defaultRefLayer: "ref_layer", // reference layer where to insert all custom layers - should be present in all baselayers
+	colorMap:{
+		"Diamant": "#78bfcc",
+		"Or": "#cca621",
+		"Carbone": "#364971",
+		"Argent": "#dee5e8",
+		"Cassitière" : "#b87acc",
+		"default": "#a3b4aa"
+	},
 	// layer info
 	layers: {
-		miningsites2019: {
-			id: "miningsites2019",
+		miningsites_new: {
+			id: "miningsites_new",
 			filterId: 1,
-			label: "Mining Sites <small>(2019)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf/miningsites2019",
-			sourceId: "miningsites2019",
+			label: "Recent Mining Sites <small>(2019)</small>",
+			source: function(layer){
+				if (layer.data){
+					return layer.data;
+				}
+				
+				console.log("Fetching data for layer " + layer.id);
+				var dataSourceUrl = "http://ipis.annexmap.net/api/data/caf/miningsites2019";
+				
+				FetchService.json(dataSourceUrl,function(data){
+					if (data && data.type === "FeatureCollection"){
+						
+						var minerals = [];
+						
+						data.features.forEach(function(feature){
+							feature.properties.minerals = feature.properties.minerals.split(",");
+							feature.properties.workers = parseInt(feature.properties.workers_numb);
+							for (var i = 0, max = feature.properties.minerals.length; i<max; i++){
+								feature.properties.minerals[i] = feature.properties.minerals[i].trim();
+								if (minerals.indexOf(feature.properties.minerals[i]) <0) minerals.push(feature.properties.minerals[i]);
+							}
+							
+							feature.properties.mineral = feature.properties.minerals[0];
+						});
+						
+						//console.error(minerals);
+						// build filter based on minerals found
+						var filterItems = [];
+						
+						minerals.forEach(function(mineral){
+							filterItems.push({value: mineral, color: Config.colorMap[mineral] || Config.colorMap.default});
+						});
+						
+						layer.filters = [
+							{
+								id: "mineral",
+								index: 141,
+								label: "Minerals",
+								items: filterItems,
+								onFilter: MapService.genericFilter,
+								filterProperty: "mineral",
+								array: true
+							}
+						];
+						var parent = layer.labelElm.parentElement;
+						UI.appendLayerFilters(layer, parent);
+						
+						
+						layer.display = {
+							type: 'circle',
+								visible: true,
+								canToggle: true,
+								size:{
+								property: 'workers',
+									interval: [[1, 3.5], [50, 4.5], [500, 6.5], [5000, 8.5]],
+							default: 3
+							},
+							color: {
+								property: "mineral",
+									data: filterItems
+							},
+							belowLayer: 'ref_layer_mines'
+						}
+					}
+					layer.data=data;
+					MapService.addLayer(layer);
+				});
+			},
+			sourceId: "miningsites_new",
 			display: {
-				type: 'circle',
-				color: 'rgba(0,0,0,1)',
-				circleStrokeColor: 'rgba(0,0,0,1)',
 				visible: true,
 				canToggle: true,
 				zIndex: 98
 			},
-			__onLoaded: function () {
-				var features = map.querySourceFeatures("miningsites_base");
-				var collection = {
-					"type": "FeatureCollection",
-					"features": []
-				};
-				features.forEach(function (item) {
-					var substance;
-					item.properties.mineral = item.properties.substance_1;
-					switch (item.properties.mineral) {
-						case "Diamond":
-						case "Gold":
-						case "Iron":
-						case "Copper":
-						case "Uranium":
-						case "Cassiterite":
-						case "Manganese":
-							substance = item.properties.mineral;
-							break;
-						default:
-							substance = "Other";
-					}
-
-					item.properties.substance = substance;
-					collection.features.push(item);
-				});
-
-
-
-				var filterItems = [
-					{value: "Diamond", color: "#78bfcc"},
-					{value: "Gold", color: "#cca621"},
-					{value: "Iron", color: "#c6d4dc"},
-					{value: "Copper", color: "#a14f1c"},
-					{value: "Uranium", color: "#99d921"},
-					{value: "Cassiterite", color: "#3b649f"},
-					{value: "Manganese", color: "#a96594"},
-					{value: "Other", color: "#a3b4aa"}
-				];
-
-				var parent = this.labelElm.parentElement;
-
-				this.filters = [
-					{
-						id: "substance",
-						index: 141,
-						label: "Substances",
-						items: filterItems,
-						onFilter: MapService.genericFilter,
-						filterProperty: "substance"
-					}
-				];
-
-				UI.appendLayerFilters(this, parent);
-
-				var colorStops = [];
-				filterItems.forEach(function (item) {
-					colorStops.push([item.value, item.color]);
-				});
-
-				map.addSource("miningsites", {
-					type: 'geojson',
-					data: collection,
-					buffer: 0,
-					maxzoom: 17
-				});
-
-				var subLayerProperties = {
-					id: "miningsites",
-					type: 'circle',
-					source: "miningsites",
-					sourceId: "miningsites",
-					paint: {
-						'circle-color': {
-							property: "substance",
-							type: "categorical",
-							stops: colorStops
-						},
-						'circle-radius': {
-							'base': 5,
-							'stops': [[4, 5], [8, 7], [12, 10], [16, 40], [18, 80]]
-						},
-						'circle-opacity': 0.9,
-						'circle-stroke-width': 0.5,
-						'circle-stroke-color': "white"
-					},
-					layout: {
-						'visibility': 'visible'
-					}
-					//onClick: function(item){
-					//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-					//}
-				};
-				//map.addLayer(subLayerProperties, "ref_miningsites_placeholder");
-				map.addLayer(subLayerProperties);
-				//MapService.addSubLayer(subLayerProperties);
-
+			popupOnhover: "name",
+			onClick: function(item){
+			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 			}
-			//onClick: function(item){
-			//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-			//}
 		},
-		miningsites_base2017: {
-			id: "miningsites_base2017",
+		miningsites_old: {
+			id: "miningsites_old",
 			filterId: 14,
-			label: "Mining Sites <small>(2017)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf/miningsites",
-			sourceId: "miningsites_base",
-			display: {
-				type: 'circle',
-				color: 'rgba(0,0,0,1)',
-				circleStrokeColor: 'rgba(0,0,0,1)',
-				visible: false,
-				canToggle: true,
-				zIndex: 98
-			},
-			__onLoaded: function () {
-				var features = map.querySourceFeatures("miningsites_base");
-				var collection = {
-					"type": "FeatureCollection",
-					"features": []
-				};
-				features.forEach(function (item) {
-					var substance;
-					item.properties.mineral = item.properties.substance_1;
-					switch (item.properties.mineral) {
-						case "Diamond":
-						case "Gold":
-						case "Iron":
-						case "Copper":
-						case "Uranium":
-						case "Cassiterite":
-						case "Manganese":
-							substance = item.properties.mineral;
-							break;
-						default:
-							substance = "Other";
-					}
+			label: "Older Mining Sites <small>(2014-2017)</small>",
+			source: function(layer){
+				if (layer.data) return layer.data;
 
-					item.properties.substance = substance;
-					collection.features.push(item);
-				});
-
+				console.log("Fetching data for layer " + layer.id);
+				var url_2017 = "http://ipis.annexmap.net/api/data/caf/miningsites";
+				var url_2014 = "http://ipis.annexmap.net/api/data/caf/miningsites2014";
 				
+				var _data = {};
 
-				var filterItems = [
-					{value: "Diamond", color: "#78bfcc"},
-					{value: "Gold", color: "#cca621"},
-					{value: "Iron", color: "#c6d4dc"},
-					{value: "Copper", color: "#a14f1c"},
-					{value: "Uranium", color: "#99d921"},
-					{value: "Cassiterite", color: "#3b649f"},
-					{value: "Manganese", color: "#a96594"},
-					{value: "Other", color: "#a3b4aa"}
-				];
-
-				var parent = this.labelElm.parentElement;
-
-				this.filters = [
-					{
-						id: "substance",
-						index: 141,
-						label: "Substances",
-						items: filterItems,
-						onFilter: MapService.genericFilter,
-						filterProperty: "substance"
-					}
-				];
-
-				UI.appendLayerFilters(this, parent);
-
-				var colorStops = [];
-				filterItems.forEach(function (item) {
-					colorStops.push([item.value, item.color]);
+				FetchService.json(url_2017,function(data){
+					_data._2017 = data;
+					process();
 				});
 
-				map.addSource("miningsites", {
-					type: 'geojson',
-					data: collection,
-					buffer: 0,
-					maxzoom: 17
+				FetchService.json(url_2014,function(data){
+					_data._2014 = data;
+					process();
 				});
+				
+				function process(){
+					if (_data._2017 && _data._2014){
 
-				var subLayerProperties = {
-					id: "miningsites",
-					type: 'circle',
-					source: "miningsites",
-					sourceId: "miningsites",
-					paint: {
-						'circle-color': {
-							property: "substance",
-							type: "categorical",
-							stops: colorStops
-						},
-						'circle-radius': {
-							'base': 5,
-							'stops': [[4, 5], [8, 7], [12, 10], [16, 40], [18, 80]]
-						},
-						'circle-opacity': 0.9,
-						'circle-stroke-width': 0.5,
-						'circle-stroke-color': "white"
-					},
-					layout: {
-						'visibility': 'visible'
+						var minerals = [];
+						var mineralMapping = {
+							"Gold" : "Or",
+							"Diamond" : "Diamant",
+							"Gold & Diamond" : "Or",
+							"Cassiterite" : "Cassitière"
+						};
+						var data = _data._2014;
+						
+						data.features.forEach(function(feature){
+							feature.properties.mineral = mineralMapping[feature.properties.mineral] || feature.properties.mineral;
+							if (minerals.indexOf(feature.properties.mineral)<0) minerals.push(feature.properties.mineral);
+						});
+						
+						_data._2017.features.forEach(function(feature){
+							feature.properties.id = "_2017" + feature.properties.id;
+							feature.properties.mineral = feature.properties.substance_1;
+							feature.properties.mineral = mineralMapping[feature.properties.mineral] || feature.properties.mineral;
+							if (minerals.indexOf(feature.properties.mineral)<0) minerals.push(feature.properties.mineral);
+							data.features.push(feature);
+							//console.log(feature);
+						});
+						
+						console.log(minerals);
+
+						var filterItems = [];
+
+						minerals.forEach(function(mineral){
+							filterItems.push({value: mineral, color: Config.colorMap[mineral] || Config.colorMap.default});
+						});
+
+						layer.filters = [
+							{
+								id: "mineral",
+								index: 141,
+								label: "Minerals",
+								items: filterItems,
+								onFilter: MapService.genericFilter,
+								filterProperty: "mineral",
+								array: true
+							}
+						];
+						var parent = layer.labelElm.parentElement;
+						UI.appendLayerFilters(layer, parent);
+
+
+						layer.display = {
+							type: 'circle',
+							visible: true,
+							canToggle: true,
+							size:{
+								property: 'workers',
+								interval: [[1, 3.5], [50, 4.5], [500, 6.5], [5000, 8.5]],
+								default: 3
+							},
+							color: {
+								property: "mineral",
+								data: filterItems
+							},
+							belowLayer: 'ref_layer_mines'
+						};
+
+						layer.data=data;
+						MapService.addLayer(layer);
+						
+						//console.log(_data._2014);
 					}
-					//onClick: function(item){
-					//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-					//}
-				};
-				//map.addLayer(subLayerProperties, "ref_miningsites_placeholder");
-				map.addLayer(subLayerProperties);
-				//MapService.addSubLayer(subLayerProperties);
-
-			}
-			//onClick: function(item){
-			//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-			//}
-		},
-		miningsites2014_placeholder: {
-			id: "miningsites2014",
-			filterId: 24,
-			label: "Mining Sites <small>(2014)</small>",
-			source: "http://ipis.annexmap.net/api/data/caf/miningsites2014",
-			sourceId: "miningsites2014_base",
+				}
+				
+				
+			},
+			sourceId: "miningsites_old",
 			display: {
-				type: 'circle',
-				color: 'rgba(0,0,0,1)',
-				circleStrokeColor: 'rgba(0,0,0,1)',
 				visible: false,
 				canToggle: true,
-				zIndex: 98
+				zIndex: 97
 			},
-			__onLoaded: function () {
-				var features = map.querySourceFeatures("miningsites2014_base");
-				var collection = {
-					"type": "FeatureCollection",
-					"features": []
-				};
-				features.forEach(function (item) {
-					var substance;
-					switch (item.properties.mineral) {
-						case "Diamond":
-						case "Gold":
-						case "Gold & Diamond":
-							substance = item.properties.mineral;
-							break;
-						default:
-							substance = "Other";
-					}
-
-					item.properties.substance = substance;
-					collection.features.push(item);
-				});
-
-				console.log(collection);
-
-				var filterItems = [
-					{value: "Diamond", color: "#78bfcc"},
-					{value: "Gold", color: "#cca621"},
-					{value: "Gold & Diamond", color: "#7dd921"},
-					{value: "Other", color: "#a3b4aa"}
-				];
-
-				var parent = this.labelElm.parentElement;
-
-				this.filters = [
-					{
-						id: "substance",
-						index: 241,
-						label: "Substances",
-						items: filterItems,
-						onFilter: MapService.genericFilter,
-						filterProperty: "substance"
-					}
-				];
-
-				UI.appendLayerFilters(this, parent);
-
-				var colorStops = [];
-				filterItems.forEach(function (item) {
-					colorStops.push([item.value, item.color]);
-				});
-
-				map.addSource("miningsites2014", {
-					type: 'geojson',
-					data: collection,
-					buffer: 0,
-					maxzoom: 17
-				});
-
-				var subLayerProperties = {
-					id: "miningsites2014",
-					type: 'circle',
-					source: "miningsites2014",
-					sourceId: "miningsites2014",
-					paint: {
-						'circle-color': {
-							property: "substance",
-							type: "categorical",
-							stops: colorStops
-						},
-						'circle-radius': {
-							'base': 5,
-							'stops': [[4, 5], [8, 7], [12, 10], [16, 40], [18, 80]]
-						},
-						'circle-opacity': 0.7,
-						'circle-stroke-width': 0.5,
-						'circle-stroke-color': "white"
-					},
-					layout: {
-						'visibility': 'visible'
-					}
-					//onClick: function(item){
-					//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-					//}
-				};
-				map.addLayer(subLayerProperties);
-				MapService.addSubLayer(subLayerProperties);
-
+			onClick: function(item){
+			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 			}
-			//onClick: function(item){
-			//  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
-			//}
 		},
 		miningActivities: {
 			id: "miningactivities",
