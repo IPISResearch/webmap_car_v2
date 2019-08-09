@@ -73,7 +73,7 @@ var Config = {
 							feature.properties.servicesList = [];
 							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
 
-							feature.properties.services = feature.properties.servicesList.filter(Boolean).join(",");
+							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>"); // only joins if not empty string
 
 							
 						});
@@ -136,18 +136,19 @@ var Config = {
 
 				var canvas = map.getCanvasContainer(); // target canvas
 
+				// canvas.addEventListener('mousedown', mouseDown, true);
 
-				/* map.addLayer({
-					"id": layer.id,
+				var x = map.addLayer({
+					"id": "new",
 					"type": "fill",
-					"source": sourceId,
+					"source": "miningsites_new.data",
 					"paint": {
 					"fill-outline-color": "rgba(0,0,0,0.1)",
 					"fill-color": "rgba(0,0,0,0.1)"
 					}
-				}); */ // Place polygon under these labels.
+				}); // Place polygon under these labels.
 
-				// console.log(x);
+				console.log(x);
 			},
 			onFilter : function(){
 				Chart.render();
