@@ -73,7 +73,7 @@ var Config = {
 							feature.properties.servicesList = [];
 							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
 
-							feature.properties.services = feature.properties.servicesList.filter(Boolean).join(",");
+							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>");
 
 							
 						});
@@ -132,20 +132,28 @@ var Config = {
 			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 			},
 			onLoaded : function(){
+				
+				if (!Config.layers.miningsites_new.data) return;
+				
 				Chart.render(); // render chart
 
 				var canvas = map.getCanvasContainer(); // target canvas
-
-
-				/* map.addLayer({
-					"id": layer.id,
-					"type": "fill",
-					"source": sourceId,
+				
+				 map.addLayer({
+					"id": "miningsites_highlights",
+					"type": "circle",
+					"source": "miningsites_new",
 					"paint": {
-					"fill-outline-color": "rgba(0,0,0,0.1)",
-					"fill-color": "rgba(0,0,0,0.1)"
+						'circle-color': "rgb(224,58,118)",
+						'circle-radius' : 10
 					}
-				}); */ // Place polygon under these labels.
+				});  // Place polygon under these labels.
+				
+				canvas.addEventListener("mousedown",mouseDown,true);
+				
+				function mouseDown(e){
+					console.log("mouse down",e)
+				}
 
 				// console.log(x);
 			},
