@@ -1095,3 +1095,11 @@ body.menuHidden #datalist.hidden{
         transform: rotate(360deg);
     }
 }
+
+/* bbox filter */
+
+.drawbbox {
+    position: absolute;
+    background: rgba(190, 72, 56, 0.1);
+    border: 2px solid #be5e38;
+}

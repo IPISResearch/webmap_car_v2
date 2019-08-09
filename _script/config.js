@@ -73,7 +73,7 @@ var Config = {
 							feature.properties.servicesList = [];
 							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
 
-							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>"); // only joins if not empty string
+							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>");
 
 							
 						});
@@ -132,24 +132,134 @@ var Config = {
 			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
 			},
 			onLoaded : function(){
+
 				Chart.render(); // render chart
+				
+				
+				if (!Config.layers.miningsites_new.data) return;
+
+				map.boxZoom.disable(); // disable default zoom
 
 				var canvas = map.getCanvasContainer(); // target canvas
 
-				// canvas.addEventListener('mousedown', mouseDown, true);
-
-				var x = map.addLayer({
-					"id": "new",
-					"type": "fill",
-					"source": "miningsites_new.data",
+				var start; // start xy coordinates on mouse move or up
+ 
+				var curr; // current xy coordinates held
+				
+				var box; // draw box
+				
+				map.addLayer({
+					"id": "miningsites_highlights",
+					"type": "circle",
+					"source": "miningsites_new",
 					"paint": {
-					"fill-outline-color": "rgba(0,0,0,0.1)",
-					"fill-color": "rgba(0,0,0,0.1)"
+						'circle-color': "rgba(190, 94, 56, 0.1)",
+						'circle-radius' : 12
 					}
-				}); // Place polygon under these labels.
+				});
+				
+				canvas.addEventListener("mousedown", mouseDown, true);
+				 
+				// Get mouse position
+				function mousePosition(e) {
+					var rect = canvas.getBoundingClientRect();
+					//console.log(rect);
+					return new mapboxgl.Point(
+					e.clientX - rect.left - canvas.clientLeft,
+					e.clientY - rect.top - canvas.clientTop
+					);
+				}
 
-				console.log(x);
+				function mouseDown(e) {
+					// Continue if shiftkey is pressed
+					if (!(e.shiftKey && e.button === 0)) return;
+					 
+					// Disable default drag on shiftkey
+					map.dragPan.disable();
+					 
+					// Add mouse events to document
+					document.addEventListener("mouseup", onMouseUp);
+					document.addEventListener("keydown", onKeyDown);
+					document.addEventListener("mousemove", onMouseMove);
+					 
+					// get first mouse position
+					start = mousePosition(e);
+					// console.log(start);
+				}
+
+				function onMouseMove(e) {
+					// Capture mouse position
+					curr = mousePosition(e);
+					 
+					// Append box
+					if (!box) {
+					box = document.createElement("div");
+					box.classList.add("drawbbox");
+					canvas.appendChild(box);
+				}
+					 
+					var minX = Math.min(start.x, curr.x),
+						minY = Math.min(start.y, curr.y),
+						maxX = Math.max(start.x, curr.x),
+						maxY = Math.max(start.y, curr.y);
+					 
+					// Adjust width and xy position box
+					var pos = "translate(" + minX + "px," + minY + "px)";
+
+					box.style.transform = pos;
+					box.style.WebkitTransform = pos;
+					box.style.width = maxX - minX + "px";
+					box.style.height = maxY - minY + "px";
+				}
+
+				function onMouseUp(e) {
+					// store xy coordinates
+					finish([start, mousePosition(e)]);
+					// console.log(finish);
+				}
+					 
+				function onKeyDown(e) {
+					// Check if ESC is pressed
+					if (e.keyCode === 27) finish();
+				}
+					 
+				function finish(bbox) {
+					// Remove events from DOM on "finish".
+					document.removeEventListener("mouseup", onMouseUp);
+					document.removeEventListener("keydown", onKeyDown);
+					document.removeEventListener("mousemove", onMouseMove);
+					 
+					if (box) {
+						box.parentNode.removeChild(box);
+						box = null;
+					}
+					 
+					// If bbox exists, query rendered features
+					if (bbox) {
+					var features = map.queryRenderedFeatures(bbox, { layers: ["miningsites_new"] });
+					//  console.log(features);
+
+
+					var filter = features.reduce(function(temp, feature) {
+						temp.push(feature.properties.id);
+						return temp;
+					}, ['in', 'id']);
+						
+						map.setFilter("miningsites_highlights", filter);
+					}
+						
+					map.dragPan.enable(); // enable drag on pan
+				}
+
+
+				map.on("mousemove", function(e) {
+					var features = map.queryRenderedFeatures(e.point, { layers: ["miningsites_new"] });
+					map.getCanvas().style.cursor = (features.length) ? "pointer" : "";
+				});
+
+			
 			},
+			
 			onFilter : function(){
 				Chart.render();
 			}
