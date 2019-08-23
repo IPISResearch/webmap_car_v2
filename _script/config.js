@@ -78,7 +78,7 @@ var Config = {
 							
 						});
 						
-						//console.error(minerals);
+						
 						// build filter based on minerals found
 						var filterItems = [];
 						
@@ -135,30 +135,37 @@ var Config = {
 
 				Chart.render(); // render chart
 				
-				
 				if (!Config.layers.miningsites_new.data) return;
 
 				map.boxZoom.disable(); // disable default zoom
 
 				var canvas = map.getCanvasContainer(); // target canvas
-
 				var start; // start xy coordinates on mouse move or up
- 
 				var curr; // current xy coordinates held
-				
 				var box; // draw box
-				
-				map.addLayer({
-					"id": "miningsites_highlights",
-					"type": "circle",
-					"source": "miningsites_new",
-					"paint": {
-						'circle-color': "rgba(190, 94, 56, 0.1)",
-						'circle-radius' : 12
-					}
-				});
+				var hasGhost = false;
 				
 				canvas.addEventListener("mousedown", mouseDown, true);
+				
+				// add gray mines dots to map
+				function addMineGhosts(){
+					if (hasGhost) return;
+					map.addLayer({
+						"id": "miningsites_ghost",
+						"type": "circle",
+						"source": "miningsites_new",
+						"paint": {
+							'circle-color': "rgba(190,190,190,0.63)",
+							'circle-radius' : {
+								'default': 3,
+								'property': 'workers',
+								'type': 'interval',
+								'stops': [[1, 3.5], [50, 4.5], [500, 6.5], [5000, 8.5]]
+							}
+						}
+					});
+					hasGhost = true;
+				}
 				 
 				// Get mouse position
 				function mousePosition(e) {
@@ -173,6 +180,9 @@ var Config = {
 				function mouseDown(e) {
 					// Continue if shiftkey is pressed
 					if (!(e.shiftKey && e.button === 0)) return;
+
+					// remove filter first
+					map.setFilter("miningsites_new", undefined);
 					 
 					// Disable default drag on shiftkey
 					map.dragPan.disable();
@@ -233,22 +243,32 @@ var Config = {
 						box.parentNode.removeChild(box);
 						box = null;
 					}
+
+					Config.layers.miningsites_new.bbox = bbox;
+					addMineGhosts();
 					 
 					// If bbox exists, query rendered features
 					if (bbox) {
-					var features = map.queryRenderedFeatures(bbox, { layers: ["miningsites_new"] });
-					//  console.log(features);
+						var features = map.queryRenderedFeatures(bbox, { layers: ["miningsites_new"] });
+						//  console.log(features);
+	
+	
+						var filter = features.reduce(function(temp, feature) {
+							temp.push(feature.properties.id);
+							return temp;
+						}, ['in', 'id']);
 
-
-					var filter = features.reduce(function(temp, feature) {
-						temp.push(feature.properties.id);
-						return temp;
-					}, ['in', 'id']);
+						var inverseFilter = features.reduce(function(temp, feature) {
+							temp.push(feature.properties.id);
+							return temp;
+						}, ['!in', 'id']);
 						
-						map.setFilter("miningsites_highlights", filter);
+						map.setFilter("miningsites_ghost", inverseFilter);
+						map.setFilter("miningsites_new", filter);
 					}
 						
 					map.dragPan.enable(); // enable drag on pan
+					Chart.render();
 				}
 
 
@@ -260,7 +280,7 @@ var Config = {
 			
 			},
 			
-			onFilter : function(){
+			onFilter: function(){
 				Chart.render();
 			}
 		},
