@@ -1,0 +1,103 @@
+
+
+#legend {
+    position:absolute;
+    bottom: 40px;
+    left: 10px;
+    opacity:0.9;
+    z-index: 100;
+    display: none;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#legend.show{
+    display: block;
+}
+#legend.hidden.show,
+body.dashboard #legend,
+body.dashboard #legend.show{
+    display: none;
+}
+
+
+
+#chart{
+    margin-bottom: 10px;
+}
+
+
+#legend {
+    position:absolute;
+    bottom: 40px;
+    left: 10px;
+    opacity:0.9;
+    z-index: 100;
+    display: none;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#legend.show{
+    display: block;
+}
+#legend.hidden.show,
+body.dashboard #legend,
+body.dashboard #legend.show{
+    display: none;
+}
+
+#legend .charts {
+    margin: 5px;
+    width: 200px;
+    height: 330px;
+    padding: 4px;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+}
+
+
+#legend .charts h3{
+    margin: 0;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+#legend .c3-chart-arcs-title{
+    font-size: 3em;
+}
+#legend .c3-tooltip td{
+    white-space: nowrap;
+}
+
+#legend .tabs{
+    display: flex;
+    text-align: center;
+}
+
+#legend .tabs .tab{
+     flex: 1;
+    padding: 4px;
+ }
+
+#legend .tabs .tab.inactive{
+    opacity: 0.6;
+    background-color: rgb(212, 212, 212);
+    color: #575757;
+}
+
+#legend .tabs .tab.inactive:hover{
+    background-color: rgb(169, 213, 224);
+    color: black;
+    cursor: pointer;
+}
+
+#legend .tabs #tab_workers.inactive{
+    border-top-right-radius: 5px;
+}
+#legend .tabs #tab_mines.inactive{
+    border-top-left-radius: 5px;
+}

@@ -2,43 +2,65 @@ var Chart = function(){
 
     var me = {};
     var chart;
+    var currentScope = "mines";
 
     me.render = function(){
+        
+        var subtitle = document.getElementById("chart_subtitle");
+        var legend = document.getElementById("legend");
+        if (!subtitle) legend.innerHTML = Template.get("chart");
+        
         
         if (chart) chart = chart.destroy();
         
         var sourceData = Config.layers.miningsites_new.data;
         if (sourceData){
 
-            var max = sourceData.features.length;
+            var features = sourceData.features;
+            if (Config.layers.miningsites_new.bbox)
+                features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
+            
+            var max =  sourceData.features.length;
+            var maxWorkers = 0;
             
             var filterElm = Config.layers.miningsites_new.filters[0];
             var items = filterElm.filterItems;
             
             var mineralMap = {};
+            var workerMap = {};
             items.forEach(function(item){
                 mineralMap[item.value] = item.checked;
             });
 
-            var total = 0;
-            var data = {};
+            var totalMines = 0;
+            var dataMines = {};
+            var totalWorkers = 0;
+            var dataWorkers = {};
+           
             
-            
-            sourceData.features.forEach(function(feature){
+            features.forEach(function(feature){
                if (mineralMap[feature.properties.mineral]){
-                   total++;
+                   totalMines++;
+                   totalWorkers += (feature.properties.workers || 0);
                    var mineral = feature.properties.mineral || "Autre";
-                   data[mineral] = (data[mineral] || 0) + 1;
-               } 
+                   dataMines[mineral] = (dataMines[mineral] || 0) + 1;
+                   dataWorkers[mineral] = (dataWorkers[mineral] || 0) + feature.properties.workers;
+               }
+                maxWorkers += (feature.properties.workers || 0);
             });
 
-            var current = total;
-
-
-            document.getElementById("chart_current").innerHTML = current;
-            document.getElementById("chart_total").innerHTML = max;
-            document.getElementById("legend").classList.add("show");
-
+            var current = totalMines;
+            var data = dataMines;
+            var tooltip = " site miniers";
+            if (currentScope === "workers"){
+                current = totalWorkers;
+                max = maxWorkers;
+                data = dataWorkers;
+                tooltip = " creuseurs";
+            }
+            
+            subtitle.innerHTML = current + " de " + max + tooltip;
+            legend.classList.add("show");
             
             var chartData = {
                 columns: [],
@@ -49,7 +71,6 @@ var Chart = function(){
                 onmouseout: function (d, i) { /*console.log("onmouseout", d, i);*/ }
             };
             
-
             for (var key in data){
                 if (data.hasOwnProperty(key)){
                     chartData.columns.push([key,data[key]]);
@@ -76,21 +97,21 @@ var Chart = function(){
                     format: {
                         title: function (d) { return 'Substance&nbsp;minérale&nbsp;principale'},
                         value: function (value, ratio, id) {
-                            return value + "&nbsp;site&nbsp;miniers";
+                            return value + tooltip.split(" ").join("&nbsp;");
                         }
                         // value: d3.format(',') // apply this format to both y and y2
                     }
                 }
             });
-            
         }
-        
-        
-        
-
-        
-
-
+    };
+    
+    me.setScope = function(scope){
+        currentScope = scope;
+        var other = (scope === "mines") ? "workers" : "mines";
+        document.getElementById("tab_" + scope).classList.remove("inactive");
+        document.getElementById("tab_" + other).classList.add("inactive");
+        me.render();
     };
 
     EventBus.on(EVENT.filterChanged,me.render);
