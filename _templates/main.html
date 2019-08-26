@@ -45,6 +45,170 @@
 <!--/dashboard-->
 
 
+
+<!--mineDashBoard-->
+<div class="popup cols2">
+    <h2>Mine: {{{name}}}</h2>
+    <div class="dashboardColLeft">
+        <table class="infotable" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>Substance(s)</th>
+                <td>{{minerals}}</td>
+            </tr>
+            <tr>
+                <th>PCode</th>
+                <td>{{{pcode}}}</td>
+            </tr>
+            <tr>
+                <th>Prefecture</th>
+                <td>{{{prefecture}}}</td>
+            </tr>
+            <tr>
+                <th>Sous Prefecture</th>
+                <td>{{{sousprefecture}}}</td>
+            </tr>
+            <tr>
+                <th>Commune</th>
+                <td>{{{commune}}}</td>
+            </tr>
+            <tr>
+                <th>Village</th>
+                <td>{{{village}}}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{{fLongitude}}}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{{fLatitude}}}</td>
+            </tr>
+            <tr>
+                <th>Origine</th>
+                <td class="source">{{{location_origin}}}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td class="source">{{{source}}}</td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="dashboardtabs">
+        {{#picture}}
+        <span data-url="http://www.ipisresearch.be/mapping/webmapping/resources/img_sites/{{picture}}" class="image" style="background-image: url('http://www.ipisresearch.be/mapping/webmapping/resources/img_sites/{{picture}}')">
+
+        </span>
+        {{/picture}}
+        <div class="{{tabButton1}} first" onclick="UI.activateDashboardTab(1,this)">Information</div>
+        <div class="{{tabButton2}}" onclick="UI.activateDashboardTab(2,this)">Substances</div>
+        <div class="{{tabButton3}}" onclick="UI.activateDashboardTab(3,this)">Présence armée</div>
+        <div class="{{tabButton4}}" onclick="UI.activateDashboardTab(4,this)">Services</div>
+        <div class="{{tabButton5}}" onclick="UI.activateDashboardTab(5,this)">Femmes et enfants</div>
+    </div>
+    <div class="popupColRight">
+
+        <div class="tabcontent">
+            <div class="tab tab1 {{tabPanel1}}">
+                {{{infoTab}}}
+            </div>
+            <div class="tab tab2 {{tabPanel2}}">
+                {{{substancesTab}}}
+            </div>
+            <div class="tab tab3 {{tabPanel3}}">
+                {{{armyTab}}}
+            </div>
+            <div class="tab tab4 {{tabPanel4}}">
+                {{{servicesTab}}}
+            </div>
+            <div class="tab tab5 {{tabPanel5}}">
+                {{{womanChildrenTab}}}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--/mineDashBoard-->
+
+
+<!--mineDetail-->
+<table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
+    <tr>
+        <th>Date de visite</th>
+        <td>{{{visit_date}}}</td>
+    </tr>
+    <tr>
+        <th>Project</th>
+        <td>{{{project}}}</td>
+    </tr>
+    {{#workers}}
+    <tr>
+        <th>Nombre de creuseurs</th>
+        <td>{{{workers}}}</td>
+    </tr>
+    {{/workers}}
+    {{#chantiers}}
+    <tr>
+        <th>Nombre de chantiers</th>
+        <td>{{{chantiers}}}</td>
+    </tr>
+    {{/chantiers}}
+    
+    <tr>
+        <th nowrap>Accidents enregistrés</th>
+        <td>{{{accidents}}}</td>
+    </tr>
+    <tr>
+        <th>Accidents mortels</th>
+        <td>{{{accident_dead}}}</td>
+    </tr>
+    
+</table>
+<!--/mineDetail-->
+
+
+<!--armyDetail-->
+<table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
+    {{#actor1name}}
+        <tr><td>{{{actor1name}}}</td></tr>
+    {{/actor1name}}
+    {{#actor2name}}
+    <tr><td>{{{actor2name}}}</td></tr>
+    {{/actor2name}}
+    {{#actor3name}}
+    <tr><td>{{{actor3name}}}</td></tr>
+    {{/actor3name}}
+</table>
+<!--/armyDetail-->
+
+<!--womanChildrenDetail-->
+<table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
+    <tr>
+        <th nowrap="" width="10%">Femmes</th><td> </td>
+    </tr>
+    
+    {{#workers_women}}
+    <tr>
+        <td nowrap="" class="checklistcaption line">Travail :</td>
+        <td line>{{workers_women}}</td>
+    </tr>
+    {{/workers_women}}
+
+
+    <tr>
+        <th nowrap="" width="10%"><br>Enfants</th><td> </td>
+    </tr>
+    <tr>
+        <td nowrap="" class="checklistcaption line">Moins de 15:</td>
+        <td class="checklistitem">{{childunder15}}</td>
+    </tr>
+    
+</table>
+<!--/womanChildrenDetail-->
+
+
 <!--minePopup-->
     <h2>Site Minière</h2>
     <table border="0" cellspacing="0" cellpadding="0" class="infotable">
@@ -150,11 +314,11 @@
 
 <!--chart-->
     <div class="tabs">
-        <div class="tab" id="tab_mines" onclick="Chart.setScope('mines')">Site minieres</div>
+        <div class="tab" id="tab_mines" onclick="Chart.setScope('mines')">Sites miniers</div>
         <div class="tab inactive" id="tab_workers" onclick="Chart.setScope('workers')">Creuseurs</div>
     </div>
     <div class="charts">
-        <h3>Site minieres visible</h3>
+        <h3>Sites miniers visibles</h3>
         <div class="label">
             <span id="chart_subtitle"></span>
         </div>
@@ -162,4 +326,10 @@
     
     </div>
 <!--/chart-->
+
+<!--lightbox-->
+<div id="lightbox">
+    <div class="image" style="background-image: url('{{url}}')"></div>
+</div>
+<!--/lightbox-->
 

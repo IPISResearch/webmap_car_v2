@@ -51,7 +51,7 @@ var Chart = function(){
 
             var current = totalMines;
             var data = dataMines;
-            var tooltip = " site miniers";
+            var tooltip = " sites miniers";
             if (currentScope === "workers"){
                 current = totalWorkers;
                 max = maxWorkers;

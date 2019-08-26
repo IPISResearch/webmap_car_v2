@@ -11,10 +11,10 @@ var Config = {
 	infoUrl: "_templates/info.html",
 	// starting point for map
 	mapCoordinates: {
-		x: 22,
-		y: 5.5,
-		zoom: 5.5,
-		bounds: [[14.05, 0.20], [30.38, 10.26]],
+		x: 18,
+		y: 5.2,
+		zoom: 6,
+		bounds: [[14.05, 4.20], [30.38, 15.26]],
 		maxZoom: 18,
 		minZoom: 5
 	},
@@ -129,7 +129,8 @@ var Config = {
 			},
 			popupOnhover: "name",
 			onClick: function(item){
-			  UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+			  //UI.popup(item.properties,"minePopup",item.geometry.coordinates,true);
+			  UI.showDashboard(Data.getMineDetail(item),"mineDashBoard");
 			},
 			onLoaded : function(){
 
