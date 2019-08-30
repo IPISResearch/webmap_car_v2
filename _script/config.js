@@ -25,7 +25,7 @@ var Config = {
 	},
 	// baselayer info
 	baselayers: [
-		{index: 1, id: "satellite", label: "Satellite", url: "mapbox://styles/ipisresearch/ciw6jsekm003a2jql0w0a7qca"},
+		{index: 1, id: "satellite", label: "Satellite (Bing)", url:"http://ecn.t0.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=6412", attribution: "© 2018 Microsoft Corporation © 2018 Digital Globe © CNES (2018) Distribution Airbus DS © 2018 HERE"},
 		{index: 4, id: "streetscar", label: "Streets (IPIS)", url: "mapbox://styles/ipisresearch/cjix950k084i72rno4tpu5mkm"}, // this is streets CAR
 		{index: 2, id: "streets", label: "Streets (OSM)", url: "mapbox://styles/ipisresearch/ciw6jpn5s002r2jtb615o6shz"},
 		{index: 3, id: "empty", label: "Empty", url: "mapbox://styles/ipisresearch/cjav3e31blm5w2smunhb32kzm"}
@@ -44,7 +44,7 @@ var Config = {
 		miningsites_new: {
 			id: "miningsites_new",
 			filterId: 1,
-			label: "Recent Mining Sites <small>(2019)</small>",
+			label: "Visited Mining Sites <small>(2019)</small>",
 			source: function(layer){
 				if (layer.data){
 					return layer.data;
@@ -288,7 +288,7 @@ var Config = {
 		miningsites_old: {
 			id: "miningsites_old",
 			filterId: 14,
-			label: "Older Mining Sites <small>(2014-2017)</small>",
+			label: "Potential Mining Sites <small>(2014-2018)</small>",
 			source: function(layer){
 				if (layer.data) return layer.data;
 
