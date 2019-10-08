@@ -5,6 +5,7 @@ var Config = {
 	apiScope: "caf",
 	apiScopeDev: "caf",
 	useMapBoxInspector: false,
+    usePass:true,
 	templateURL: "_templates/main.html",
 	showDisclaimerOnFirstUse: false,
 	disclaimerUrl: "_templates/disclaimer.html",
@@ -57,7 +58,11 @@ var Config = {
 					if (data && data.type === "FeatureCollection"){
 						
 						var minerals = [];
-						
+						var prefectures = [];
+						var services = [];
+						var actors = [];
+						var conflicts = [];
+
 						data.features.forEach(function(feature){
 							feature.properties.mineralList = feature.properties.minerals.split(",");
 							feature.properties.workers = parseInt(feature.properties.workers_numb);
@@ -72,8 +77,64 @@ var Config = {
 							// services are represented in one line
 							feature.properties.servicesList = [];
 							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
+							addUnique(services,feature.properties.services1_name);
+							addUnique(services,feature.properties.services2_name);
+							addUnique(services,feature.properties.services3_name);
 
 							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>");
+
+							addUnique(prefectures,feature.properties.prefecture);
+
+							feature.properties.workergroup = 0;
+							if (feature.properties.workers>0) feature.properties.workergroup = 0;
+							if (feature.properties.workers>50) feature.properties.workergroup = 2;
+							if (feature.properties.workers>500) feature.properties.workergroup = 3;
+
+							feature.properties.womengroup = 0;
+							var women = parseInt(feature.properties.workers_women);
+							if (!isNaN(women)){
+								if (women>0){
+									feature.properties.womengroup = 1;
+								}else{
+									feature.properties.womengroup = 2;
+								}
+							}
+
+							feature.properties.childrengroup = 0;
+							var children = parseInt(feature.properties.childunder15);
+							if (!isNaN(children)){
+								if (children>0){
+									feature.properties.childrengroup = 1;
+								}else{
+									feature.properties.childrengroup = 2;
+								}
+							}
+
+							feature.properties.roadblockgroup = 0;
+							if (feature.properties.roadblocks_actor) feature.properties.roadblockgroup = 1;
+
+
+                            addUnique(actors,feature.properties.actor1name);
+                            addUnique(actors,feature.properties.actor2name);
+                            addUnique(actors,feature.properties.actor3name);
+
+                            feature.properties.actorList = [feature.properties.actor1name, feature.properties.actor2name, feature.properties.actor2name];
+
+
+
+                            feature.properties.accidentgroup = 0;
+                            var dead = parseInt(feature.properties.accident_dead);
+                            var injured = parseInt(feature.properties.accident_injured);
+                            if (injured>0)  feature.properties.accidentgroup = 1;
+                            if (dead>0)  feature.properties.accidentgroup = 2;
+
+                            feature.properties.conflictList = feature.properties.conflict_type.split(",");
+                            for (var i = 0, max = feature.properties.conflictList.length; i<max; i++){
+                                feature.properties.conflictList[i] = feature.properties.conflictList[i].trim();
+                                addUnique(conflicts,feature.properties.conflictList[i]);
+                            }
+
+							//console.error(feature);
 
 							
 						});
@@ -81,10 +142,33 @@ var Config = {
 						
 						// build filter based on minerals found
 						var filterItems = [];
-						
 						minerals.forEach(function(mineral){
 							filterItems.push({value: mineral, color: Config.colorMap[mineral] || Config.colorMap.default});
 						});
+
+						prefectures.sort();
+						var prefecturFilter = [];
+						prefectures.forEach(function(item){
+							prefecturFilter.push({value: item, color: Config.colorMap.default});
+						});
+
+						services.sort();
+						var serviceFilter = [];
+						services.forEach(function(item){
+							serviceFilter.push({value: item, color: Config.colorMap.default});
+						});
+
+                        actors.sort();
+                        var actorFilter = [];
+                        actors.forEach(function(item){
+                            actorFilter.push({value: item, color: Config.colorMap.default});
+                        });
+
+                        conflicts.sort();
+                        var conflictFilter = [];
+                        conflicts.forEach(function(item){
+                            conflictFilter.push({value: item, color: Config.colorMap.default});
+                        });
 						
 						layer.filters = [
 							{
@@ -95,7 +179,104 @@ var Config = {
 								onFilter: MapService.genericMultiFilter,
 								filterProperty: "mineralList",
 								array: true
-							}
+							},
+							{
+								id: "prefectures",
+								index: 142,
+								label: "Prefectures",
+								items: prefecturFilter,
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "prefecture"
+							},
+							{
+								id: "workers",
+								index: 143,
+								label: "Nombre de creuseurs",
+								items: [
+									{label: "Aucun / pas de données", value:0},
+									{label: "1 à 50", value:1},
+									{label: "50 à 500", value:2},
+									{label: "Plus que 500", value:3}
+								],
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "workergroup"
+							},
+							{
+								id: "women",
+								index: 144,
+								label: "Présence Femmes",
+								items: [
+									{label: "Oui", value:1},
+									{label: "Non", value:2}
+								],
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "womengroup"
+							},
+							{
+								id: "children",
+								index: 145,
+								label: "Présence Enfants",
+								items: [
+									{label: "Oui", value:1},
+									{label: "Non", value:2}
+								],
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "childrengroup"
+							},
+							{
+								id: "services",
+								index: 146,
+								label: "Présence services",
+								items: serviceFilter,
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "servicesList",
+								array: true,
+								maxVisibleItems:6
+							},
+                            {
+                                id: "actors",
+                                index: 147,
+                                label: "Présence armée",
+                                items: actorFilter,
+                                onFilter: MapService.genericMultiFilter,
+                                filterProperty: "actorList",
+                                array: true,
+                                maxVisibleItems:6
+                            },
+                            {
+                                id: "accidents",
+                                index: 148,
+                                label: "Accidents",
+                                items: [
+                                    {label: "Aucun", value:0},
+                                    {label: "Blessé", value:1},
+                                    {label: "Mort", value:2}
+                                ],
+                                onFilter: MapService.genericMultiFilter,
+                                filterProperty: "accidentgroup",
+                                maxVisibleItems:6
+                            },
+							{
+								id: "roadblocks",
+								index: 149,
+								label: "Roadblocks",
+								items: [
+									{label: "Oui", value:1},
+									{label: "Non", value:0}
+								],
+								onFilter: MapService.genericMultiFilter,
+								filterProperty: "roadblockgroup"
+							},
+                            {
+                                id: "conflicts",
+                                index: 1491,
+                                label: "Conflit",
+                                items: conflictFilter,
+                                onFilter: MapService.genericMultiFilter,
+                                filterProperty: "conflictList",
+                                array: true,
+                                maxVisibleItems:6
+                            },
 						];
 						var parent = layer.labelElm.parentElement;
 						UI.appendLayerFilters(layer, parent);
@@ -282,7 +463,11 @@ var Config = {
 			},
 			
 			onFilter: function(){
+			    console.error("onfilter");
 				Chart.render();
+				setTimeout(function(){
+                    Chart.render();
+                },200);
 			}
 		},
 		miningsites_old: {
@@ -514,3 +699,8 @@ var Config = {
 		}
 	}
 };
+
+
+function addUnique(array,value){
+	if (value && array.indexOf(value)<0) array.push(value);
+}

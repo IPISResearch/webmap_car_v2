@@ -1029,3 +1029,19 @@ body.menuHidden #datalist.hidden{
     background: rgba(190, 72, 56, 0.1);
     border: 2px solid #be5e38;
 }
+
+#loginpanel .button{
+    border: none;
+    width: 100%;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+#loginpanel input{
+    border: 1px solid #1DA1F2;
+    border-radius: 5px;
+    padding: 6px;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+}

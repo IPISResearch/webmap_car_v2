@@ -17,6 +17,7 @@ var Chart = function(){
         if (sourceData){
 
             var features = sourceData.features;
+            features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
             if (Config.layers.miningsites_new.bbox)
                 features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
             
