@@ -140,3 +140,41 @@ body.loading #searchbox{
 #searchresults .footer .less:hover{
     color: black;
 }
+
+
+#selectbox{
+    position: absolute;
+    z-index: 100;
+    left: 10px;
+    top: 146px;
+
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+#selectbox .control-select {
+    float: left;
+    display: block;
+    content: '';
+    text-indent: -999em;
+    background: url("../_img/icons-leaflet.png") no-repeat;
+    background-position: 1px -256px;
+
+    width: 30px;
+    height: 30px;
+
+}
+
+#selectbox:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+#selectbox.active{
+    background-color: #dcfbf9;
+}
+
+#selectbox.active:hover{
+    background-color: #cfeeec;
+}

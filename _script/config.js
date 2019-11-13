@@ -1,11 +1,12 @@
 var version = "0.0.1";
 
 var Config = {
-	mapId: "CAFV3",
+	mapId: "CARMINEV1",
+	mapTitle: "CAR MINE V1",
 	apiScope: "caf",
 	apiScopeDev: "caf",
 	useMapBoxInspector: false,
-    usePass:true,
+    usePass:false,
 	templateURL: "_templates/main.html",
 	showDisclaimerOnFirstUse: false,
 	disclaimerUrl: "_templates/disclaimer.html",
@@ -360,8 +361,11 @@ var Config = {
 				}
 
 				function mouseDown(e) {
+
+					var doSelect = UI.select || (e.shiftKey && e.button === 0);
+
 					// Continue if shiftkey is pressed
-					if (!(e.shiftKey && e.button === 0)) return;
+					if (!doSelect) return;
 
 					// remove filter first
 					map.setFilter("miningsites_new", undefined);
@@ -431,10 +435,17 @@ var Config = {
 					 
 					// If bbox exists, query rendered features
 					if (bbox) {
-						var features = map.queryRenderedFeatures(bbox, { layers: ["miningsites_new"] });
+
+						var isBox = true;
+						var dX = Math.abs(bbox[0].x - bbox[1].x);
+						var dY = Math.abs(bbox[0].y - bbox[1].y);
+						if (dX<10 && dY<10) isBox = false;
+
+						var features = isBox ? map.queryRenderedFeatures(bbox, { layers: ["miningsites_new"] }) : map.querySourceFeatures("miningsites_new");
+						Config.layers.miningsites_new.bbox = isBox ? Config.layers.miningsites_new.bbox : undefined;
 						//  console.log(features);
-	
-	
+
+
 						var filter = features.reduce(function(temp, feature) {
 							temp.push(feature.properties.id);
 							return temp;
@@ -444,9 +455,10 @@ var Config = {
 							temp.push(feature.properties.id);
 							return temp;
 						}, ['!in', 'id']);
-						
+
 						map.setFilter("miningsites_ghost", inverseFilter);
 						map.setFilter("miningsites_new", filter);
+
 					}
 						
 					map.dragPan.enable(); // enable drag on pan
@@ -458,6 +470,10 @@ var Config = {
 					var features = map.queryRenderedFeatures(e.point, { layers: ["miningsites_new"] });
 					map.getCanvas().style.cursor = (features.length) ? "pointer" : "";
 				});
+
+				Config.onDeselect = function(){
+					finish([{x:0,y:0},{x:0,y:0}])
+				}
 
 			
 			},
