@@ -40,7 +40,15 @@ var Chart = function(){
            
             
             features.forEach(function(feature){
-               if (mineralMap[feature.properties.mineral]){
+               var passed = false;
+
+               // arghg ... queried features only contains basic types, no arrays ...
+               var minerals = feature.properties.minerals.split(",");
+               minerals.forEach(function(mineral){
+                   mineral = mineral.trim();
+                  if (mineralMap[mineral]) passed = true;
+               });
+               if (passed){
                    totalMines++;
                    totalWorkers += (feature.properties.workers || 0);
                    var mineral = feature.properties.mineral || "Autre";
