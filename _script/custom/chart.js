@@ -90,18 +90,14 @@ var Chart = function(){
             chart = c3.generate({
                 bindto: '#chart1',
                 size:{
-                    height: 300,
+                    height: 220,
                     width: 190
                 },
                 data: chartData,
                 donut: {
                     title: current
                 },
-                legend: {
-                    item: {
-                        onclick: function (id) {}
-                    }
-                },
+                legend: {show: false},
                 tooltip: {
                     format: {
                         title: function (d) { return 'Substance&nbsp;minérale&nbsp;principale'},
