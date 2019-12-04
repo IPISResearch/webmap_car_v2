@@ -70,7 +70,7 @@ body.loading #searchbox{
 #searchresults .result{
     padding: 4px 10px 4px 24px;
     border-bottom: 1px solid silver;
-    background: url("../_img/ui_icons.png?v2") no-repeat;
+    background: url("../_img/ui_icons.png?v3") no-repeat;
     background-position: 4px -297px;
 }
 
@@ -107,7 +107,7 @@ body.loading #searchbox{
 }
 
 #searchresults .result.imine{
-    background-position: 4px -980px;
+    background-position: 4px -377px;
 }
 
 #searchresults .result.ipdv{

@@ -1,18 +1,18 @@
 <!--menu-->
 <button class="mapboxgl-popup-close-button" type="button" aria-label="Close Graph" id="closeMenu">×</button>
     <div class="inner">
-      <a href="http://ipisresearch.be"><img src="_img/ipislogo.png" alt="IPIS logo" style="float:right;width:44px"></a>
-      <h2 class="section">Interactive webmap of the Central African Republic</h2>
+      <a href="https://ipisresearch.be"><img src="_img/ipislogo.png" alt="IPIS logo" style="float:right;width:44px"></a>
+      <h2 class="section">Cartographie des sites miniers artisanaux dans l'ouest de la RCA</h2>
 
-        <h3 class="section">Map Layers</h3>
+        <h3 class="section">Jeux de donnéees</h3>
 
         <div id="layers"></div>
         <br>
         <div id="baselayers">
-            <h3>Base Layers</h3>
+            <h3>Cartes de fond</h3>
         </div>
         <br>
-        <a href="javascript:UI.showInfo()" class="button">More info</a>
+        <a href="javascript:UI.showInfo()" class="button">Plus d'info</a>
         <br>
     </div>
 
@@ -184,15 +184,32 @@
 
 <!--armyDetail-->
 <table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
-    {{#actor1name}}
-        <tr><td>{{{actor1name}}}</td></tr>
-    {{/actor1name}}
-    {{#actor2name}}
-    <tr><td>{{{actor2name}}}</td></tr>
-    {{/actor2name}}
-    {{#actor3name}}
-    <tr><td>{{{actor3name}}}</td></tr>
-    {{/actor3name}}
+    <tr><th nowrap="" colspan="2">Présence armée</th></tr>
+    {{#hasArmedPresence}}
+        {{#actor1name}}
+            <tr><td colspan="2" class="line">{{{actor1name}}}</td></tr>
+        {{/actor1name}}
+        {{#actor2name}}
+            <tr><td colspan="2" class="line">{{{actor2name}}}</td></tr>
+        {{/actor2name}}
+        {{#actor3name}}
+            <tr><td colspan="2" class="line">{{{actor3name}}}</td></tr>
+        {{/actor3name}}
+    {{/hasArmedPresence}}
+
+    {{^hasArmedPresence}}
+        <tr><td colspan="2">Pas de présence armée constatée</td></tr>
+    {{/hasArmedPresence}}
+
+
+    {{#conflict_category}}
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr><th nowrap="" width="10%">Conflit</th><th></th></tr>
+        <tr><td nowrap="" class="checklistcaption line">Type :</td><td>{{{conflict_category}}}</td></tr>
+       {{#conflict_type}}
+            <tr><td nowrap="" class="checklistcaption line">Info :</td><td>{{{conflict_type}}}</td></tr>
+       {{/conflict_type}}
+    {{/conflict_category}}
 </table>
 <!--/armyDetail-->
 
@@ -205,8 +222,14 @@
     {{#workers_women}}
     <tr>
         <td nowrap="" class="checklistcaption line">Travail :</td>
-        <td line>{{workers_women}}</td>
+        <td class="line">{{workers_women}}</td>
     </tr>
+    {{#workers_women_work_type}}
+    <tr>
+        <td nowrap="" class="checklistcaption line">Type de travail :</td>
+        <td class="line">{{workers_women_work_type}}</td>
+    </tr>
+    {{/workers_women_work_type}}
     {{/workers_women}}
 
 
@@ -214,12 +237,60 @@
         <th nowrap="" width="10%"><br>Enfants</th><td> </td>
     </tr>
     <tr>
-        <td nowrap="" class="checklistcaption line">Moins de 15:</td>
+        <td nowrap="" class="checklistcaption line">Moins de 15 :</td>
         <td class="checklistitem">{{childunder15}}</td>
     </tr>
+    {{#childunder15_work_type}}
+    <tr>
+        <td nowrap="" class="checklistcaption line">Type de travail :</td>
+        <td class="checklistitem">{{childunder15_work_type}}</td>
+    </tr>
+    {{/childunder15_work_type}}
     
 </table>
 <!--/womanChildrenDetail-->
+
+
+<!--servicesDetail-->
+<table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
+    <tr>
+        <th nowrap="" width="10%">Services</th><td> </td>
+    </tr>
+
+    {{#servicesDetail}}
+        {{#sname}}
+            <tr>
+                <td nowrap="" class="checklistcaption line">{{sname}}</td>
+                <td class="line">{{sfrequency}}</td>
+            </tr>
+        {{/sname}}
+    {{/servicesDetail}}
+
+    {{^hasServices}}
+    <tr>
+        <td nowrap="" class="line" colspan="2">Pas de présence des services constatée</td>
+    </tr>
+    {{/hasServices}}
+
+
+</table>
+
+<!--/servicesDetail-->
+
+<!--mineralDetail-->
+<table class="infotable tabbed" border="0" cellspacing="1" cellpadding="0">
+    <tr>
+        <th nowrap="" width="10%">Substances</th><td> </td>
+    </tr>
+
+    <tr>
+        <td nowrap="" class="line" colspan="2">{{{minerals}}}</td>
+    </tr>
+
+
+</table>
+
+<!--/mineralDetail-->
 
 
 <!--minePopup-->
@@ -331,7 +402,7 @@
         <div class="tab inactive" id="tab_workers" onclick="Chart.setScope('workers')">Creuseurs</div>
     </div>
     <div class="charts">
-        <h3>Sites miniers visibles</h3>
+        <h3 id="chart_title">Sites miniers visibles</h3>
         <div class="label">
             <span id="chart_subtitle"></span>
         </div>

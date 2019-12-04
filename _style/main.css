@@ -117,6 +117,7 @@ body.dashboard #menu{
 #menu .layer{
     padding-left: 16px;
     padding-top: 2px;
+    position: relative;
 }
 
 #menu .layer .label{
@@ -174,6 +175,26 @@ body.dashboard #menu{
 
 #menu .items{
     padding: 4px 4px 4px 20px;
+}
+
+#menu .filter .filteractive{
+    position: absolute;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    background: url("../_img/ui_icons.png?v3") no-repeat;
+    background-position: 0 -404px;
+    opacity: 0.5;
+    display: none;
+}
+
+#menu .filter .filteractive:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+#menu .filter.hasfilter .filteractive{
+    display: block;
 }
 
 #menu .filteritem{

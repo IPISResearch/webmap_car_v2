@@ -3,16 +3,18 @@ var Chart = function(){
     var me = {};
     var chart;
     var currentScope = "mines";
+    var chartTitle;
 
     me.render = function(){
-        
+
+        chartTitle = document.getElementById("chart_title");
         var subtitle = document.getElementById("chart_subtitle");
         var legend = document.getElementById("legend");
         if (!subtitle) legend.innerHTML = Template.get("chart");
-        
-        
+
+
         if (chart) chart = chart.destroy();
-        
+
         var sourceData = Config.layers.miningsites_new.data;
         if (sourceData){
 
@@ -20,13 +22,13 @@ var Chart = function(){
             features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
             if (Config.layers.miningsites_new.bbox)
                 features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
-            
+
             var max =  sourceData.features.length;
             var maxWorkers = 0;
-            
+
             var filterElm = Config.layers.miningsites_new.filters[0];
             var items = filterElm.filterItems;
-            
+
             var mineralMap = {};
             var workerMap = {};
             items.forEach(function(item){
@@ -37,24 +39,24 @@ var Chart = function(){
             var dataMines = {};
             var totalWorkers = 0;
             var dataWorkers = {};
-           
-            
-            features.forEach(function(feature){
-               var passed = false;
 
-               // arghg ... queried features only contains basic types, no arrays ...
-               var minerals = feature.properties.minerals.split(",");
-               minerals.forEach(function(mineral){
-                   mineral = mineral.trim();
-                  if (mineralMap[mineral]) passed = true;
-               });
-               if (passed){
-                   totalMines++;
-                   totalWorkers += (feature.properties.workers || 0);
-                   var mineral = feature.properties.mineral || "Autre";
-                   dataMines[mineral] = (dataMines[mineral] || 0) + 1;
-                   dataWorkers[mineral] = (dataWorkers[mineral] || 0) + feature.properties.workers;
-               }
+
+            features.forEach(function(feature){
+                var passed = false;
+
+                // arghg ... queried features only contains basic types, no arrays ...
+                var minerals = feature.properties.minerals.split(",");
+                minerals.forEach(function(mineral){
+                    mineral = mineral.trim();
+                    if (mineralMap[mineral]) passed = true;
+                });
+                if (passed){
+                    totalMines++;
+                    totalWorkers += (feature.properties.workers || 0);
+                    var mineral = feature.properties.mineral || "Autre";
+                    dataMines[mineral] = (dataMines[mineral] || 0) + 1;
+                    dataWorkers[mineral] = (dataWorkers[mineral] || 0) + feature.properties.workers;
+                }
                 maxWorkers += (feature.properties.workers || 0);
             });
 
@@ -67,10 +69,10 @@ var Chart = function(){
                 data = dataWorkers;
                 tooltip = " creuseurs";
             }
-            
+
             subtitle.innerHTML = current + " de " + max + tooltip;
             legend.classList.add("show");
-            
+
             var chartData = {
                 columns: [],
                 colors: [],
@@ -79,7 +81,7 @@ var Chart = function(){
                 onmouseover: function (d, i) { /*console.log("onmouseover", d, i);*/ },
                 onmouseout: function (d, i) { /*console.log("onmouseout", d, i);*/ }
             };
-            
+
             for (var key in data){
                 if (data.hasOwnProperty(key)){
                     chartData.columns.push([key,data[key]]);
@@ -110,16 +112,28 @@ var Chart = function(){
             });
         }
     };
-    
+
     me.setScope = function(scope){
         currentScope = scope;
         var other = (scope === "mines") ? "workers" : "mines";
         document.getElementById("tab_" + scope).classList.remove("inactive");
         document.getElementById("tab_" + other).classList.add("inactive");
+
+
+        if(chartTitle){
+            if (scope === "mines"){
+                chartTitle.innerHTML = "Sites miniers visibles";
+            }else{
+                chartTitle.innerHTML = "Creuseurs visibles";
+            }
+        }
         me.render();
     };
 
     EventBus.on(EVENT.filterChanged,me.render);
+    EventBus.on(EVENT.baseLayerChanged,function(){
+        setTimeout(me.render,1000);
+    });
 
 
     return me;
