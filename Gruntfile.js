@@ -151,8 +151,10 @@ module.exports = function(grunt) {
 	// Default task(s).
 	// note:  use concat before uglify to keep the order of the JS files
 	grunt.registerTask('init', ['clean:core','gitclone']);
-	grunt.registerTask('map', ['clean:core','gitclone','clean:build','copy','replace','concat','uglify','clean:js','alldone']);
-	grunt.registerTask('core', ['concat:core','uglify:core','clean:js']);
+	//grunt.registerTask('map', ['clean:core','gitclone','clean:build','copy','replace','concat','uglify','clean:js','alldone']);
+	grunt.registerTask('map', ['clean:core','gitclone','clean:build','copy','replace','concat','uglify','alldone']);
+	//grunt.registerTask('core', ['concat:core','uglify:core','clean:js']);
+	grunt.registerTask('core', ['concat:core','uglify:core']);
 	grunt.registerTask('default', ['map']);
 	grunt.registerTask('alldone', function() {
 		grunt.log.writeln("\nAll done, you'll find your compiled map in the 'build' directory"['cyan']);

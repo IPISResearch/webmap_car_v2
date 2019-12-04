@@ -360,17 +360,20 @@ var Config = {
 
 				map.boxZoom.disable(); // disable default zoom
 
+
+
 				var canvas = map.getCanvasContainer(); // target canvas
 				var start; // start xy coordinates on mouse move or up
 				var curr; // current xy coordinates held
 				var box; // draw box
-				var hasGhost = false;
+				Config.layers.miningsites_new.hasGhost = false;
 
-				canvas.addEventListener("mousedown", mouseDown, true);
+				if (!Config.layers.miningsites_new.hasEventListener) canvas.addEventListener("mousedown", mouseDown, true);
+				Config.layers.miningsites_new.hasEventListener = true;
 
 				// add gray mines dots to map
 				function addMineGhosts(){
-					if (hasGhost) return;
+					if (Config.layers.miningsites_new.hasGhost) return;
 					map.addLayer({
 						"id": "miningsites_ghost",
 						"type": "circle",
@@ -385,7 +388,7 @@ var Config = {
 							}
 						}
 					});
-					hasGhost = true;
+					Config.layers.miningsites_new.hasGhost = true;
 				}
 
 				// Get mouse position
@@ -399,6 +402,7 @@ var Config = {
 				}
 
 				function mouseDown(e) {
+
 
 					var doSelect = UI.select || (e.shiftKey && e.button === 0);
 
