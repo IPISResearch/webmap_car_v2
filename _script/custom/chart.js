@@ -4,6 +4,7 @@ var Chart = function(){
     var chart;
     var currentScope = "mines";
     var chartTitle;
+    var maxWorkers = 0;
 
     me.render = function(){
 
@@ -12,44 +13,33 @@ var Chart = function(){
         var legend = document.getElementById("legend");
         if (!subtitle) legend.innerHTML = Template.get("chart");
 
-
         if (chart) chart = chart.destroy();
 
         var sourceData = Config.layers.miningsites_new.data;
         if (sourceData){
 
             var features = sourceData.features;
-            features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
-            if (Config.layers.miningsites_new.bbox)
+            var doFilter = true;
+            if (Config.layers.miningsites_new.bbox){
                 features = map.queryRenderedFeatures(Config.layers.miningsites_new.bbox, { layers: ["miningsites_new"] });
+                doFilter = false; // queryRenderedFeatures is already filtered
+            }
 
             var max =  sourceData.features.length;
-            var maxWorkers = 0;
-
-            var filterElm = Config.layers.miningsites_new.filters[0];
-            var items = filterElm.filterItems;
-
-            var mineralMap = {};
-            var workerMap = {};
-            items.forEach(function(item){
-                mineralMap[item.value] = item.checked;
-            });
+            var _maxWorkers = 0;
 
             var totalMines = 0;
             var dataMines = {};
             var totalWorkers = 0;
             var dataWorkers = {};
 
-
             features.forEach(function(feature){
-                var passed = false;
+                var passed = true;
 
-                // arghg ... queried features only contains basic types, no arrays ...
-                var minerals = feature.properties.minerals.split(",");
-                minerals.forEach(function(mineral){
-                    mineral = mineral.trim();
-                    if (mineralMap[mineral]) passed = true;
-                });
+                if (doFilter && Config.layers.miningsites_new.filteredIds){
+                    passed = Config.layers.miningsites_new.filteredIds.indexOf(feature.properties.id)>=0;
+                }
+
                 if (passed){
                     totalMines++;
                     totalWorkers += (feature.properties.workers || 0);
@@ -57,8 +47,9 @@ var Chart = function(){
                     dataMines[mineral] = (dataMines[mineral] || 0) + 1;
                     dataWorkers[mineral] = (dataWorkers[mineral] || 0) + feature.properties.workers;
                 }
-                maxWorkers += (feature.properties.workers || 0);
+                _maxWorkers += (feature.properties.workers || 0);
             });
+            maxWorkers = Math.max(maxWorkers,_maxWorkers);
 
             var current = totalMines;
             var data = dataMines;
