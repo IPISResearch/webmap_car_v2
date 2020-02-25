@@ -1,4 +1,4 @@
-var version = "0.0.1";
+var version = "0.0.2";
 
 var Config = {
 	mapId: "CARMINEV1",
@@ -77,11 +77,19 @@ var Config = {
 							feature.properties.chantiers = feature.properties.chantiers_numb;
 
 							// services are represented in one line
+							if (!(feature.properties.services1_name || feature.properties.services2_name || feature.properties.services3_name)){
+								feature.properties.services1_name = "(Aucun)"
+							}
+
 							feature.properties.servicesList = [];
 							feature.properties.servicesList.push(feature.properties.services1_name, feature.properties.services2_name, feature.properties.services3_name);
 							addUnique(services,feature.properties.services1_name);
 							addUnique(services,feature.properties.services2_name);
 							addUnique(services,feature.properties.services3_name);
+
+							if (!(feature.properties.services1_name || feature.properties.services2_name || feature.properties.services3_name)){
+
+							}
 
 							feature.properties.services = feature.properties.servicesList.filter(Boolean).join("<br>");
 							feature.properties.servicesDetail = [
@@ -167,8 +175,11 @@ var Config = {
 
 						services.sort();
 						var serviceFilter = [];
+						var serviceNames = {
+							"(Aucun)" : "Aucun"
+						};
 						services.forEach(function(item){
-							serviceFilter.push({value: item, color: Config.colorMap.default});
+							serviceFilter.push({value: item, label: serviceNames[item] || item, color: Config.colorMap.default});
 						});
 
 						actors.sort();
@@ -200,7 +211,7 @@ var Config = {
 						layer.filters = [
 							{
 								id: "mineral",
-								index: 141,
+								index: 11,
 								label: "Minerais",
 								items: filterItems,
 								onFilter: MapService.genericMultiFilter,
@@ -209,7 +220,7 @@ var Config = {
 							},
 							{
 								id: "prefectures",
-								index: 142,
+								index: 12,
 								label: "Préfectures",
 								items: prefecturFilter,
 								onFilter: MapService.genericMultiFilter,
@@ -217,7 +228,7 @@ var Config = {
 							},
 							{
 								id: "workers",
-								index: 143,
+								index: 13,
 								label: "Nombre de creuseurs",
 								items: [
 									{label: "Aucun / pas de données", value:0},
@@ -231,7 +242,7 @@ var Config = {
 							},
 							{
 								id: "women",
-								index: 144,
+								index: 14,
 								label: "Présence Femmes",
 								items: [
 									{label: "Oui", value:1},
@@ -242,7 +253,7 @@ var Config = {
 							},
 							{
 								id: "children",
-								index: 145,
+								index: 15,
 								label: "Présence Enfants<br>&ensp;<small>(De moins de 15 ans, participant activement à la production)</small>",
 
 								items: [
@@ -254,7 +265,7 @@ var Config = {
 							},
 							{
 								id: "services",
-								index: 146,
+								index: 16,
 								label: "Présence de services de l'Etat",
 								items: serviceFilter,
 								onFilter: MapService.genericMultiFilter,
@@ -263,18 +274,8 @@ var Config = {
 								maxVisibleItems:6
 							},
 							{
-								id: "actors",
-								index: 147,
-								label: "Présence armée",
-								items: actorFilter,
-								onFilter: MapService.genericMultiFilter,
-								filterProperty: "actorList",
-								array: true,
-								maxVisibleItems:6
-							},
-							{
 								id: "actortypes",
-								index: 148,
+								index: 17,
 								label: "Type présence armée",
 								items: actortypeFilter,
 								onFilter: MapService.genericMultiFilter,
@@ -284,7 +285,7 @@ var Config = {
 							},
 							{
 								id: "accidents",
-								index: 149,
+								index: 18,
 								label: "Accidents <br><small>(dans les 12 derniers mois précédant la visite)</small>",
 								items: [
 									{label: "Aucun", value:0},
@@ -297,7 +298,7 @@ var Config = {
 							},
 							{
 								id: "roadblocks",
-								index: 1491,
+								index: 19,
 								label: "Barrière à l'entrée de la mine",
 								items: [
 									{label: "Oui", value:1},
@@ -308,7 +309,7 @@ var Config = {
 							},
 							{
 								id: "conflicts",
-								index: 1492,
+								index: 110,
 								label: "Conflit <br><small>(dans les 12 derniers mois précédant la visite)</small>",
 								items: conflictFilter,
 								onFilter: MapService.genericMultiFilter,
@@ -334,7 +335,8 @@ var Config = {
 								property: "mineral",
 								data: filterItems
 							},
-							belowLayer: 'ref_layer_mines'
+							belowLayer: 'ref_layer_mines',
+							zIndex: 1000
 						}
 					}
 					layer.data=data;
@@ -647,7 +649,7 @@ var Config = {
 			visible: false,
 			display: {
 				type: 'circle',
-				radius: [
+				circleRadius: [
 					"interpolate",
 					["exponential", 2],
 					["zoom"],
@@ -668,18 +670,36 @@ var Config = {
 			id: "miningzoneskp",
 			filterId: 26,
 			label: "Zones conformes au Processus de Kimberley<br><small>(2019)</small>",
-			source: "https://ipis.annexmap.net/api/data/caf/miningzoneskp",
+			source: "https://ipis.annexmap.net/api/data/carmine/miningzoneskp",
 			sourceId: "miningzoneskp",
 			display: {
 				type: 'fill',
-				fillColor: '#78bfcc',
-				fillOpacity: 0.5,
+				fillColor:{
+					property: "kp_status",
+					data:[
+						{label: "Zones conformes", value: "compliant", color: "#46c79e"},
+						{label: "Zones prioritaires", value: "priority", color: "#dd8e17"}
+					]
+				},
+				fillOpacity: 0.3,
 				hoverOpacity: 0.8,
 				visible: false,
 				canToggle: true,
-				zIndex: 92
+				zIndex: 92,
+				belowLayer: 'ref_layer_armedgroupareas'
 			},
+			filters: [
+				{
+					id: "kp_status", index: 261, label: "Status", items:
+						[
+							{label: "Zones conformes", value: "compliant", color: "#46c79e"},
+							{label: "Zones prioritaires", value: "priority", color: "#dd8e17"}
+						],
+					onFilter: MapService.genericFilter, filterProperty: "kp_status"
+				},
+			],
 			onClick: function (item, lngLat) {
+				item.properties.statusText = item.properties.kp_status === "compliant" ? "Zone conforme" : "Zone prioritaire";
 				UI.popup(item.properties, "miningzoneskpPopup", lngLat, true);
 			}
 		},
@@ -691,12 +711,21 @@ var Config = {
 			sourceId: "mineralconcessions",
 			display: {
 				type: 'fill',
-				fillColor: '#78bfcc',
+				fillColor:{
+					property: "perm_type",
+					data:[
+						{label: "Permis de Recherche", value: "PR", color: "#43b7ff"},
+						{label: "Autorisation de Reconnaissance Minière", value: "ARM", color: "#2396dd"},
+						{label: "Permis d'Exploitation", value: "PE", color: "#36ae71"},
+						{label: "Permis d'Exploitation Artisanale Semi-Mecanisee", value: "PEASM", color: "#9f2bae"}
+					]
+				},
 				fillOpacity: 0.5,
 				hoverOpacity: 0.8,
 				visible: false,
 				canToggle: true,
-				zIndex: 96
+				zIndex: 96,
+				belowLayer: 'ref_layer_concessions'
 			},
 			filters: [
 				{
@@ -707,7 +736,7 @@ var Config = {
 							{label: "Permis d'Exploitation", value: "PE", color: "#36ae71"},
 							{label: "Permis d'Exploitation Artisanale Semi-Mecanisee", value: "PEASM", color: "#9f2bae"}
 						],
-					onFilter: MapService.genericFilter, filterProperty: "perm_type_long"
+					onFilter: MapService.genericMultiFilter, filterProperty: "perm_type",array: false
 				},
 				{
 					id: "resources", index: 52, label: "Ressources", items:
@@ -718,9 +747,10 @@ var Config = {
 							{value: "Iron", color: "#aaaaaa"},
 							{value: "Limestone", color: "#aaaaaa"},
 							{value: "Colombo-Tantalite", color: "#aaaaaa"},
-							{value: "Unknown", color: "#aaaaaa"}
+							{value: "Uranium", color: "#aaaaaa"},
+							{label: "Unkown", value: "??", color: "#aaaaaa"}
 						],
-					onFilter: MapService.genericFilter, filterProperty: "resources"
+					onFilter: MapService.genericMultiFilter, filterProperty: "resources",array: false
 				}
 			],
 			onClick: function (item, lngLat) {
@@ -734,7 +764,46 @@ var Config = {
 			id: "destinations",
 			filterId: 6,
 			label: "Destination des minerais",
-			source: "data/destinations.json",
+			source__: "data/destinations.json",
+			source: function(layer) {
+				// load JSON as file and set data manually - this way we can still access it later
+				if (layer.data) return layer.data;
+				console.log("Fetching data for layer " + layer.id);
+				var dataSourceUrl = "https://ipis.annexmap.net/api/data/carmine/destinations";
+				FetchService.json(dataSourceUrl, function (data) {
+					var list = Data.featureCollection();
+					if (data && data.result){
+						data.result.forEach(function(item,index){
+							if (item.m){
+								var line = Data.featureLine(item.lat1,item.long1,item.lat2,item.long2);
+
+								var minerals = item.m.split(",");
+								line.properties.mineralList = [];
+								minerals.forEach(function(m){
+									line.properties.mineralList.push(m.trim());
+								});
+								line.properties.from = item.name1;
+								line.properties.to = item.name2;
+								line.properties.mineral = line.properties.mineralList[0];
+								line.properties.minerals = item.m;
+								line.properties.id = index+1;
+								list.features.push(line);
+							}
+
+						});
+
+						layer.display = Config.layers.destinations.display;
+						layer.data = list;
+						MapService.addLayer(layer);
+					}
+
+					/*
+
+						layer.data = data;
+						MapService.addLayer(layer);
+					 */
+				});
+			},
 			sourceId: "destinations",
 			display: {
 				type: 'line',
@@ -745,32 +814,126 @@ var Config = {
 						{value: "Diamant", color: "#2396dd"}
 					]
 				},
-				lineWidth: 1,
-				hoverOpacity: 0.8,
+				lineWidth__: {
+					property: "selected",
+					type: 'categorical',
+					stops: [
+						[true, 10],
+						[false, 4]
+					]},
+				lineWidth: [
+					"interpolate",
+					["exponential", 2.2],
+					["zoom"],
+					8, ['+', 2, ['*', 5, ['number', ['get', 'selected'], 0]]], // actually easier than it looks:  https://docs.mapbox.com/help/tutorials/mapbox-gl-js-expressions/
+					18, ['+', 1000, ['*', 500, ['number', ['get', 'selected'], 0]]]
+				],
+				lineOpacity: [
+					"interpolate",
+					["exponential", 2.2],
+					["zoom"],
+					8, ['+', 0.4, ['*', 0.6, ['number', ['get', 'selected'], 0]]],
+					18, ['+', 0.8, ['*', 0.2, ['number', ['get', 'selected'], 0]]]
+				],
+				hoverOpacity: 1,
 				visible: false,
 				canToggle: true,
-				zIndex: 97
+				zIndex: 97,
+				belowLayer: 'ref_layer_concessions'
 			},
 			filters: [
 				{
-					id: "minerais", index: 51, label: "Minéral", items:
+					id: "minerais", index: 61, label: "Minéral", items:
 						[
 							{label: "Or", value: "Or", color: "#f9ce21"},
 							{label: "Diamant", value: "Diamant", color: "#2396dd"}
 						],
-					onFilter: MapService.genericFilter, filterProperty: "mineral"
+					onFilter: MapService.genericMultiFilter,
+					filterProperty: "mineralList",
+					array: true
 				}
 			],
 			popupOnhover: function(item){
-				return item.properties.mineral  + " de " + item.properties.from + " à " + item.properties.to;
+				return item.properties.minerals  + " de " + item.properties.from + " à " + item.properties.to;
 			},
 			onClick: function (item, lngLat) {
-				//UI.popup(item.properties, "mineralConcessionsPopup", lngLat, true);
+				var lineId = item.properties.id;
+				var data = map.getSource("destinations").serialize().data;
+
+				var line = data.features.find(function(line){return line.properties.id === lineId});
+				if (line){
+					line.properties.selected = line.properties.selected ? 0 : 1;
+					map.getSource('destinations').setData(data);
+				}
 			},
 			onFilter: function (item, lngLat) {
 				console.log("filter");
 			}
+		},
+		rivers: {
+			id: "rivers",
+			filterId: 25,
+			label: "Rivières",
+			source: "mapbox://ipisresearch.87b9ryrr",
+			sourceLayer: "caf_rivers_2018_l_ipis-08yal4", // You cand find what this is after uploading a tileset and inserting it in a mapbox studio style. See also https://www.mapbox.com/mapbox-gl-js/style-spec/#layer-source-layer
+			sourceId: "rivers",
+			display: {
+				type: 'line',
+				lineColor: "#69cae8",
+				lineWidth: {
+					stops: [[4, 0.2], [6, 0.6], [8, 1]]
+				},
+				lineOpacity: 1,
+				visible: false,
+				canToggle: true,
+				belowLayer: 'ref_layer_protectedAreas'
 		}
+		},
+		protectedareas: {
+			id: "protectedareas",
+			filterId: 24,
+			label: "Aires protégées <small>(2018)</small>",
+			source: "https://ipis.annexmap.net/api/data/caf/protectedareas",
+			sourceId: "protectedareas",
+			display: {
+				type: 'fill',
+				fillColor: {
+					property: "type_eng",
+					data: [
+						{value: "National Park", color: "#3ba151"},
+						{value: "Wildlife Reserve", color: "#6cc680"},
+						{value: "Biosphere Reserve", color: "#9bcd95"},
+						{value: "Integral Natural Reserve", color: "#72af7f"},
+						{value: "Nature Reserve", color: "#649f72"}
+					]
+				},
+				fillOpacity: 0.5,
+				hoverOpacity: 0.8,
+				visible: false,
+				canToggle: true,
+				zIndex: 92,
+				belowLayer: 'ref_layer_concessions'
+			},
+			//filters:[
+			//  {id: "type_eng", index: 55, label: "Type", items:
+			//  [
+			//    {value: "National Park", color: "#3ba151"},
+			//    {value: "Wildlife Reserve", color: "#6cc680"},
+			//    {value: "Biosphere Reserve", color: "#9bcd95"},
+			//    {value: "Integral Natural Reserve", color: "#72af7f"},
+			//    {value: "Nature Reserve", color: "#649f72"}
+			//  ],
+			//  onFilter: MapService.genericFilter,filterProperty: "type_eng"}],
+			//popupOnhover: "type_ap",
+			onClick: function (item, lngLat) {
+				function format(item) {
+					return item;
+				}
+
+				UI.hideDashboard();
+				UI.popup(format(item).properties, "protectedAreaPopup", lngLat, true);
+			}
+		},
 	}
 };
 

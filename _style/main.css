@@ -413,6 +413,32 @@ body.dashboard #menu{
     box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
 }
 
+#disclaimer #disclaimerbody h1, #info #infobody h1{
+    color: #208ad6;
+    margin: 10px 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 110%;
+}
+
+#info #infobody small{
+    display: block;
+    padding: 4px 0;
+    font-size: 12px;
+    font-style: italic;
+}
+
+
+
+#disclaimer #disclaimerbody h2, #info #infobody h2{
+    color: #1c65a3;
+    margin: 10px 0 0 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: normal;
+}
+
 #disclaimer #disclaimerbody a, #info #infobody a{
     color: #1DA1F2;
 }
@@ -472,6 +498,22 @@ body.disclaimer #disclaimer, body.info #info{
 
 .infotable th{
     font-weight: bold;
+}
+
+.infotable .cb{
+    font-weight: normal;
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+    background-color: #97eea9;
+}
+
+.infotable .cb.yes{
+    background-color: #ebad2d;
+}
+
+.infotable .col1{
+    padding-left: 12px;
 }
 
 .popup.cols2{
