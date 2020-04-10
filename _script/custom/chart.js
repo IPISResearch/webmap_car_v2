@@ -8,6 +8,8 @@ var Chart = function(){
 
     me.render = function(){
 
+        if (Config.useStory) return;
+
         chartTitle = document.getElementById("chart_title");
         var subtitle = document.getElementById("chart_subtitle");
         var legend = document.getElementById("legend");
